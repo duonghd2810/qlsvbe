@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=quanlysinhvien;integratedSecurity=false;encrypt=false;trustServerCertificate=true;
+    username: sa
+    password: 123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+  jackson:
+    time-zone: GMT+7
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hoangdangduong2001@gmail.com
+    password: hxtbtdnifuqbpndn
+logging:
+  level:
+    org:
+      springframework: trace
