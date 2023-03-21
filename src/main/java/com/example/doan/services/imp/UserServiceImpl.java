@@ -8,7 +8,7 @@ import com.example.doan.repositories.RoleRepository;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IUserService;
 import com.example.doan.utils.ConvertObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,11 +17,11 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final MailServiceImpl mailService;
 
     @Override
     public List<User> getAllTeacher() {
@@ -36,7 +36,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        if(user == null){
+        if(user.isEmpty()){
             throw new NotFoundException("User does not exists");
         }
         return user.get();

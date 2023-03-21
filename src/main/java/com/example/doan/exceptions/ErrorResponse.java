@@ -4,7 +4,8 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class ErrorResponse {
     private Integer status;

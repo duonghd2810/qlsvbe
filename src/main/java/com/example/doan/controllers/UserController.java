@@ -3,6 +3,7 @@ package com.example.doan.controllers;
 import com.example.doan.bases.BaseController;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.models.User;
+import com.example.doan.services.IMailService;
 import com.example.doan.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class UserController extends BaseController<User> {
     @Autowired
     private IUserService userService;

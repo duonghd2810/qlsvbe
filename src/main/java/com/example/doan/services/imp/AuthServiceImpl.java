@@ -8,22 +8,17 @@ import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IAuthService;
 import com.example.doan.utils.ConvertObject;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements IAuthService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthenticationResponse register(UserDTO userDTO) {
-        var user = new User();
+       /* var user = new User();
         var newUser =  ConvertObject.convertUserDTOToUser(userDTO,user);
         userRepository.save(newUser);
         var jwtToken = jwtService.generateToken(user);
@@ -32,25 +27,26 @@ public class AuthServiceImpl implements IAuthService {
                 .userId(newUser.getId())
                 .fullName(newUser.getFullName())
                 .roleSet(newUser.getRoless())
-                .build();
+                .build();*/
+        return new AuthenticationResponse();
     }
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
+        /*authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow();
+        var user = userRepository.findByUsername(request.getUsername());
         var jwtToken  = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId())
                 .fullName(user.getFullName())
                 .roleSet(user.getRoless())
-                .build();
+                .build();*/
+        return new AuthenticationResponse();
     }
 }

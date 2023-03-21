@@ -1,11 +1,10 @@
 package com.example.doan.dtos;
 
 import com.example.doan.enums.ResponseMessageEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseDto<T> {

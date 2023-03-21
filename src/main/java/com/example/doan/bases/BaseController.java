@@ -11,7 +11,7 @@ import java.util.Set;
 public class BaseController<T> {
     public ResponseEntity<?> resSuccess(T data){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto<>(HttpStatus.OK.value(), ResponseMessageEnum.SUCCESS,data)
+                new ResponseDto<T>(HttpStatus.OK.value(), ResponseMessageEnum.SUCCESS,data)
         );
     }
     public ResponseEntity<?> resListSuccess(List<T> list){

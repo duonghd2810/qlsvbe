@@ -1,6 +1,8 @@
 package com.example.doan.utils;
 
+import com.example.doan.dtos.MajorDTO;
 import com.example.doan.dtos.UserDTO;
+import com.example.doan.models.Major;
 import com.example.doan.models.Role;
 import com.example.doan.models.User;
 
@@ -32,5 +34,15 @@ public class ConvertObject {
             user.setAvatar(userDTO.getAvatar());
         }
         return user;
+    }
+
+    public static Major convertMajorDTOToMajor(MajorDTO majorDTO,Major major){
+        if(majorDTO.getMajorName() != null){
+            major.setMajorName(majorDTO.getMajorName());
+        }
+        if(majorDTO.getDeanName() != null){
+            major.setDeanName(majorDTO.getDeanName());
+        }
+        return major;
     }
 }
