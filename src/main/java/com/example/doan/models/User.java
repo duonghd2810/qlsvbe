@@ -1,9 +1,9 @@
 package com.example.doan.models;
 
-import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Set;
 
