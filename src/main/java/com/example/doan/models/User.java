@@ -41,6 +41,10 @@ public class User{
 
     private String avatar;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_class")
+    private CollegeClass collegeClass;
+
     @ManyToMany(fetch = FetchType.EAGER,mappedBy = "userss")
     private Set<Role> roless;
 }

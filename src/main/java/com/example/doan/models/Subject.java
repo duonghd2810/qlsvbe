@@ -1,9 +1,10 @@
 package com.example.doan.models;
 
+import com.example.doan.enums.PriceTcEnum;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
+
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -11,20 +12,16 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "major")
-public class Major {
+@Table(name = "subject")
+public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Nationalized
-    @Column(name = "major_name")
-    private String majorName;
+    private String subjectName;
 
-    @Nationalized
-    @Column(name = "dean")
-    private String deanName;
+    private Integer tc;
 
-    @OneToMany(mappedBy = "major")
-    List<CollegeClass> classes;
+    private PriceTcEnum price = PriceTcEnum.PRICE;
 }
