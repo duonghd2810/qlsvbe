@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,4 +25,7 @@ public class Subject {
     private Integer tc;
 
     private PriceTcEnum price = PriceTcEnum.PRICE;
+
+    @OneToMany(mappedBy = "subjectCourse")
+    private List<CourseGrade> courseGrades;
 }

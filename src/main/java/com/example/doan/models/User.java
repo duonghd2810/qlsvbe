@@ -5,6 +5,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -47,4 +48,10 @@ public class User{
 
     @ManyToMany(fetch = FetchType.EAGER,mappedBy = "userss")
     private Set<Role> roless;
+
+    @OneToMany(mappedBy = "studentCourse")
+    private List<CourseGrade> courseGrades;
+
+    @OneToMany(mappedBy = "teacherCourse")
+    private List<CourseGrade> courseGradeList;
 }
