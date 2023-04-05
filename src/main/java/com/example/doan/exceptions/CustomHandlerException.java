@@ -23,4 +23,9 @@ public class CustomHandlerException {
     public ErrorResponse customUploadImageException(UploadImageException ex, WebRequest request){
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
+    @ExceptionHandler(DuplicateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse customDuplicateException(DuplicateException ex, WebRequest request){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
 }

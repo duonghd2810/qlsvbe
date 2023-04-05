@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController extends BaseController<AuthenticationResponse> {
     private final IAuthService authService;
-    @PostMapping("/register")
+    @PostMapping("/registerstudent")
     public ResponseEntity<?> register(
             @RequestBody UserDTO userDTO
     ){
-        return this.resSuccess(authService.register(userDTO));
+        return this.resSuccess(authService.registerStudent(userDTO));
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(

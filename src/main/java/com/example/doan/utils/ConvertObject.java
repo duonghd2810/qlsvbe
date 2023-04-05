@@ -20,16 +20,6 @@ public class ConvertObject {
         if(userDTO.getEmail() != null){
             user.setEmail(userDTO.getEmail());
         }
-        if(user.getRoless().contains(Role.builder().roleName("admin").build())) {
-            user.setUsername("admin" + user.getId());
-        }else if(user.getRoless().contains(Role.builder().roleName("teacher").build())) {
-            user.setUsername("gv" + user.getId());
-        }else if(user.getRoless().contains(Role.builder().roleName("student").build())){
-            user.setUsername("sv" + user.getId());
-        }
-        if(userDTO.getPassword() != null){
-            user.setPassword(userDTO.getPassword());
-        }
         if(userDTO.getAvatar() != null){
             user.setAvatar(userDTO.getAvatar());
         }
