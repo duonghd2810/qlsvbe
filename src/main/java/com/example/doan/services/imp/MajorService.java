@@ -21,7 +21,7 @@ public class MajorService implements IMajorService {
     public Major getMajorById(Long id) {
         Optional<Major> major = majorRepository.findById(id);
         if(major.isEmpty()){
-            throw new NotFoundException("Major not found");
+            throw new NotFoundException("Major is not found");
         }
         return major.get();
     }

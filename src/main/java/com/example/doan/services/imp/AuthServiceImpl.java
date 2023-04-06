@@ -49,16 +49,26 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public AuthenticationResponse registerStudent(UserDTO userDTO) {
+        User oldUser = new User();
         String username = GenaralDataUser.generateUsername();
+        do {
+            oldUser = userRepository.findByUsername(username);
+            if(oldUser != null){
+                username = GenaralDataUser.generateUsername();
+            }
+        }while(oldUser != null);
         String password = GenaralDataUser.generatePassword();
-        User oldUser = userRepository.findByUsername(username);
-        if(oldUser != null){
-            throw new DuplicateException("User has exists");
-        }
         User user = new User();
         ConvertObject.convertUserDTOToUser(userDTO,user);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        StringBuilder content = new StringBuilder("Thông tin tài khoản \n");
+        content.append("Tên đăng nhập:  ");
+        content.append(username);
+        content.append("\n");
+        content.append("Mât khẩu:  ");
+        content.append(password);
+        mailService.sendMailWithText("Thông tin sinh viên "+ user.getFullName(),content.toString(),user.getEmail());
         Role role = roleRepository.findByRoleName("STUDENT");
         user.setRoless(Set.of(role));
         User newUser = userRepository.save(user);
@@ -74,12 +84,52 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public AuthenticationResponse registerAdmin(UserDTO userDTO) {
-        return null;
+        String username = GenaralDataUser.generateUsername();
+        String password = GenaralDataUser.generatePassword();
+        User oldUser = userRepository.findByUsername(username);
+        if(oldUser != null){
+            throw new DuplicateException("Admin has exists");
+        }
+        User user = new User();
+        ConvertObject.convertUserDTOToUser(userDTO,user);
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        Role role = roleRepository.findByRoleName("ADMIN");
+        user.setRoless(Set.of(role));
+        User newUser = userRepository.save(user);
+        Set<User> users = role.getUserss();
+        users.add(user);
+        role.setUserss(users);
+        roleRepository.save(role);
+        final UserDetails userDetails = myUserDetailService.loadUserByUsername(newUser.getUsername());
+        final String jwt = jwtService.generateToken(userDetails);
+
+        return new AuthenticationResponse(jwt, newUser.getId(), newUser.getUsername(), newUser.getAvatar(), List.of(role.getRoleName()));
     }
 
     @Override
     public AuthenticationResponse registerTeacher(UserDTO userDTO) {
-        return null;
+        String username = GenaralDataUser.generateUsername();
+        String password = GenaralDataUser.generatePassword();
+        User oldUser = userRepository.findByUsername(username);
+        if(oldUser != null){
+            throw new DuplicateException("Teacher has exists");
+        }
+        User user = new User();
+        ConvertObject.convertUserDTOToUser(userDTO,user);
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        Role role = roleRepository.findByRoleName("TEACHER");
+        user.setRoless(Set.of(role));
+        User newUser = userRepository.save(user);
+        Set<User> users = role.getUserss();
+        users.add(user);
+        role.setUserss(users);
+        roleRepository.save(role);
+        final UserDetails userDetails = myUserDetailService.loadUserByUsername(newUser.getUsername());
+        final String jwt = jwtService.generateToken(userDetails);
+
+        return new AuthenticationResponse(jwt, newUser.getId(), newUser.getUsername(), newUser.getAvatar(), List.of(role.getRoleName()));
     }
 
     @Override
