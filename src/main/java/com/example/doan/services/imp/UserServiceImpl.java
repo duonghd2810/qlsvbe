@@ -1,5 +1,6 @@
 package com.example.doan.services.imp;
 
+import com.cloudinary.Cloudinary;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.User;
@@ -8,16 +9,20 @@ import com.example.doan.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final Cloudinary cloudinary;
 
     @Override
     public List<User> getAll() {
@@ -61,5 +66,21 @@ public class UserServiceImpl implements IUserService {
         }
         userRepository.delete(user.get());
         return "Delete success";
+    }
+
+    @Override
+    public String uploadAvatar(MultipartFile multipartFile,Long id) throws IOException {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new NotFoundException("User is not found");
+        }
+        String url = cloudinary.uploader()
+                .upload(multipartFile.getBytes(),
+                        Map.of("public_id", UUID.randomUUID().toString()))
+                .get("url")
+                .toString();
+        user.get().setAvatar(url);
+        userRepository.save(user.get());
+        return url;
     }
 }

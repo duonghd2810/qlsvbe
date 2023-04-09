@@ -7,6 +7,9 @@ import com.example.doan.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -39,5 +42,11 @@ public class UserController extends BaseController<User> {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "id")Long id){
         return this.resStringSuccess(userService.deleteUser(id));
+    }
+    @PostMapping("/{id}/upload")
+    public ResponseEntity<?> uploadAvatar(@RequestParam("image")MultipartFile multipartFile,
+                                          @PathVariable(name = "id")Long id) throws IOException {
+        String image = userService.uploadAvatar(multipartFile,id);
+        return this.resStringSuccess(image);
     }
 }
