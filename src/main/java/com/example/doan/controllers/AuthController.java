@@ -18,10 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController extends BaseController<AuthenticationResponse> {
     private final IAuthService authService;
     @PostMapping("/registerstudent")
-    public ResponseEntity<?> register(
+    public ResponseEntity<?> registerStudent(
             @RequestBody UserDTO userDTO
     ){
         return this.resSuccess(authService.registerStudent(userDTO));
+    }
+    @PostMapping("/registeradmin")
+    public ResponseEntity<?> registerAdmin(
+            @RequestBody UserDTO userDTO
+    ){
+        return this.resSuccess(authService.registerAdmin(userDTO));
+    }
+    @PostMapping("/registerteacher")
+    public ResponseEntity<?> registerTeacher(
+            @RequestBody UserDTO userDTO
+    ){
+        return this.resSuccess(authService.registerTeacher(userDTO));
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(

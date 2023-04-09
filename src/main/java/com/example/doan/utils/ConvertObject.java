@@ -3,7 +3,6 @@ package com.example.doan.utils;
 import com.example.doan.dtos.MajorDTO;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.models.Major;
-import com.example.doan.models.Role;
 import com.example.doan.models.User;
 
 public class ConvertObject {
@@ -22,6 +21,12 @@ public class ConvertObject {
         }
         if(userDTO.getAvatar() != null){
             user.setAvatar(userDTO.getAvatar());
+        }
+        if(userDTO.getGender() != null){
+            user.setGender(userDTO.getGender());
+        }
+        if(userDTO.getPhone() != null){
+            user.setPhone(userDTO.getPhone());
         }
         return user;
     }

@@ -5,7 +5,6 @@ import com.example.doan.dtos.RoleDTO;
 import com.example.doan.models.Role;
 import com.example.doan.services.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +33,6 @@ public class RoleController extends BaseController<Role> {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRole(@PathVariable(name = "id")Long id){
-       return ResponseEntity.status(HttpStatus.OK.value()).body(iRoleService.deleteRole(id));
+       return this.resStringSuccess(iRoleService.deleteRole(id));
     }
 }

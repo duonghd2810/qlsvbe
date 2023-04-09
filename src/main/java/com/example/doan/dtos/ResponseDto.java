@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseDto<T> {
-    private Integer status;
     private ResponseMessageEnum message;
     private T result;
 }

@@ -50,11 +50,11 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public AuthenticationResponse registerStudent(UserDTO userDTO) {
         User oldUser = new User();
-        String username = GenaralDataUser.generateUsername();
+        String username = GenaralDataUser.generateStudent();
         do {
             oldUser = userRepository.findByUsername(username);
             if(oldUser != null){
-                username = GenaralDataUser.generateUsername();
+                username = GenaralDataUser.generateStudent();
             }
         }while(oldUser != null);
         String password = GenaralDataUser.generatePassword();
@@ -83,18 +83,28 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public AuthenticationResponse registerAdmin(UserDTO userDTO) {
-        String username = GenaralDataUser.generateUsername();
+    public AuthenticationResponse registerTeacher(UserDTO userDTO) {
+        User oldUser = new User();
+        String username = GenaralDataUser.generateTeacher();
+        do {
+            oldUser = userRepository.findByUsername(username);
+            if(oldUser != null){
+                username = GenaralDataUser.generateTeacher();
+            }
+        }while(oldUser != null);
         String password = GenaralDataUser.generatePassword();
-        User oldUser = userRepository.findByUsername(username);
-        if(oldUser != null){
-            throw new DuplicateException("Admin has exists");
-        }
         User user = new User();
         ConvertObject.convertUserDTOToUser(userDTO,user);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        Role role = roleRepository.findByRoleName("ADMIN");
+        StringBuilder content = new StringBuilder("Thông tin tài khoản \n");
+        content.append("Tên đăng nhập:  ");
+        content.append(username);
+        content.append("\n");
+        content.append("Mât khẩu:  ");
+        content.append(password);
+        mailService.sendMailWithText("Thông tin giáo viên "+ user.getFullName(),content.toString(),user.getEmail());
+        Role role = roleRepository.findByRoleName("TEACHER");
         user.setRoless(Set.of(role));
         User newUser = userRepository.save(user);
         Set<User> users = role.getUserss();
@@ -108,18 +118,28 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public AuthenticationResponse registerTeacher(UserDTO userDTO) {
-        String username = GenaralDataUser.generateUsername();
+    public AuthenticationResponse registerAdmin(UserDTO userDTO) {
+        User oldUser = new User();
+        String username = GenaralDataUser.generateAdmin();
+        do {
+            oldUser = userRepository.findByUsername(username);
+            if(oldUser != null){
+                username = GenaralDataUser.generateAdmin();
+            }
+        }while(oldUser != null);
         String password = GenaralDataUser.generatePassword();
-        User oldUser = userRepository.findByUsername(username);
-        if(oldUser != null){
-            throw new DuplicateException("Teacher has exists");
-        }
         User user = new User();
         ConvertObject.convertUserDTOToUser(userDTO,user);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        Role role = roleRepository.findByRoleName("TEACHER");
+        StringBuilder content = new StringBuilder("Thông tin tài khoản \n");
+        content.append("Tên đăng nhập:  ");
+        content.append(username);
+        content.append("\n");
+        content.append("Mât khẩu:  ");
+        content.append(password);
+        mailService.sendMailWithText("Thông tin admin",content.toString(),user.getEmail());
+        Role role = roleRepository.findByRoleName("ADMIN");
         user.setRoless(Set.of(role));
         User newUser = userRepository.save(user);
         Set<User> users = role.getUserss();

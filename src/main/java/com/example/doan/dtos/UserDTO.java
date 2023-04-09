@@ -2,7 +2,7 @@ package com.example.doan.dtos;
 
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 public class UserDTO {
     private String fullname;
 
-    private Timestamp dateOfBirth;
+    private Date dateOfBirth;
 
     private String phone;
 

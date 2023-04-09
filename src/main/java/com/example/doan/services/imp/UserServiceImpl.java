@@ -2,35 +2,35 @@ package com.example.doan.services.imp;
 
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.exceptions.NotFoundException;
-import com.example.doan.models.Role;
 import com.example.doan.models.User;
-import com.example.doan.repositories.RoleRepository;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IUserService;
-import com.example.doan.utils.ConvertObject;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final MailServiceImpl mailService;
+    private final ModelMapper modelMapper;
 
     @Override
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+    @Override
     public List<User> getAllTeacher() {
-        return null;
+        return userRepository.getAllTeacher();
     }
 
     @Override
     public List<User> getAllStudent() {
-        return null;
+        return userRepository.getAllStudent();
     }
 
     @Override
@@ -43,44 +43,23 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User createTeacher(UserDTO userDTO) {
-        User user = new User();
-        ConvertObject.convertUserDTOToUser(userDTO,user);
-        Set<Role> roles = new HashSet<>(roleRepository.findAll());
-        Set<Role> roleResult  = new HashSet<>();
-        for(Role role: roles){
-            if("teacher".equals(role.getRoleName())){
-                roleResult.add(role);
-            }
-        }
-        user.setRoless(roleResult);
-        User newUser = userRepository.save(user);
-        return newUser;
-    }
-
-    @Override
-    public User createStudent(UserDTO userDTO) {
-        User user = new User();
-        ConvertObject.convertUserDTOToUser(userDTO,user);
-        Set<Role> roles = new HashSet<>(roleRepository.findAll());
-        Set<Role> roleResult  = new HashSet<>();
-        for(Role role: roles){
-            if("student".equals(role.getRoleName())){
-                roleResult.add(role);
-            }
-        }
-        user.setRoless(roleResult);
-        User newUser = userRepository.save(user);
-        return newUser;
-    }
-
-    @Override
     public User updateUser(UserDTO userDTO, Long id) {
-        return null;
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new NotFoundException("User is not found");
+        }
+        User newUser = this.modelMapper.map(userDTO,User.class);
+        newUser.setId(user.get().getId());
+        return userRepository.save(newUser);
     }
 
     @Override
     public String deleteUser(Long id) {
-        return null;
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new NotFoundException("User is not found");
+        }
+        userRepository.delete(user.get());
+        return "Delete success";
     }
 }

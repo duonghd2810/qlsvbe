@@ -25,11 +25,17 @@ public class CollegeClass {
     @Nationalized
     private String homeroomTeacher;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_category")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_major")
     @JsonIgnore
     private Major major;
 
     @OneToMany(mappedBy = "collegeClass")
     List<User> userss;
+
+    public CollegeClass(String className, String homeroomTeacher, Major major) {
+        this.className = className;
+        this.homeroomTeacher = homeroomTeacher;
+        this.major = major;
+    }
 }

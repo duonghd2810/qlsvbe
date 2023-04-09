@@ -26,10 +26,6 @@ public class CourseGrade {
     @JoinColumn(name = "id_student")
     private User studentCourse;
 
-    @ManyToOne
-    @JoinColumn(name = "id_teacher")
-    private User teacherCourse;
-
     private Double hs1;
 
     private Double hs2;

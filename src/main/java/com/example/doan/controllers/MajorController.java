@@ -5,7 +5,6 @@ import com.example.doan.dtos.MajorDTO;
 import com.example.doan.models.Major;
 import com.example.doan.services.IMajorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +33,6 @@ public class MajorController extends BaseController<Major> {
     }
     @DeleteMapping("/delete/{id_major}")
     public ResponseEntity<?> deleteMajor(@PathVariable(name = "id_major") Long id){
-        return ResponseEntity.status(HttpStatus.OK.value()).body(majorService.deleteMajor(id));
+        return this.resStringSuccess(majorService.deleteMajor(id));
     }
 }

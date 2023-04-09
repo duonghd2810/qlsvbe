@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +24,8 @@ public class User{
     @Nationalized
     private String fullName;
 
-    private Timestamp dateOfBirth;
+    @Temporal(TemporalType.DATE)
+    private Date dateOfBirth;
 
     private String phone;
 
@@ -51,7 +52,4 @@ public class User{
 
     @OneToMany(mappedBy = "studentCourse")
     private List<CourseGrade> courseGrades;
-
-    @OneToMany(mappedBy = "teacherCourse")
-    private List<CourseGrade> courseGradeList;
 }
