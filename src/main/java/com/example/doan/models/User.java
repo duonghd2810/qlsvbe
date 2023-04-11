@@ -52,7 +52,4 @@ public class User{
 
     @OneToMany(mappedBy = "studentCourse")
     private List<CourseGrade> courseGrades;
-
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "listTeacher")
-    private List<Subject> subjects;
 }
