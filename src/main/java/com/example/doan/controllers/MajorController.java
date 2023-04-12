@@ -22,16 +22,16 @@ public class MajorController extends BaseController<Major> {
     public ResponseEntity<?> getMajorById(@PathVariable(name = "id_major") Long id){
         return this.resSuccess(majorService.getMajorById(id));
     }
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createMajor(@RequestBody MajorDTO majorDTO){
         return this.resSuccess(majorService.createMajor(majorDTO));
     }
-    @PatchMapping("/update/{id_major}")
+    @PatchMapping("/{id_major}")
     public ResponseEntity<?> createMajor(@RequestBody MajorDTO majorDTO,
                                          @PathVariable(name = "id_major") Long id){
         return this.resSuccess(majorService.updateMajor(majorDTO,id));
     }
-    @DeleteMapping("/delete/{id_major}")
+    @DeleteMapping("/{id_major}")
     public ResponseEntity<?> deleteMajor(@PathVariable(name = "id_major") Long id){
         return this.resStringSuccess(majorService.deleteMajor(id));
     }

@@ -5,6 +5,7 @@ import com.example.doan.dtos.CollegeClassDTO;
 import com.example.doan.models.CollegeClass;
 import com.example.doan.services.ICollegeClassService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +17,13 @@ public class CollegeClassController extends BaseController<CollegeClass> {
 
     @GetMapping
     public ResponseEntity<?> getAll(){
-        return this.resListSuccess(collegeClassService.getAllClass());
+        return ResponseEntity.status(HttpStatus.OK.value()).body(collegeClassService.getAllClass());
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(name = "id")Long id){
         return this.resSuccess(collegeClassService.getClassById(id));
     }
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createClass(@RequestBody CollegeClassDTO collegeClassDTO){
         return this.resSuccess(collegeClassService.createClass(collegeClassDTO));
     }

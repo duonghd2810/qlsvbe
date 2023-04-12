@@ -35,14 +35,8 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public Subject createSubject(SubjectDTO subjectDTO) {
-        Optional<User> teacher = userRepository.findById(subjectDTO.getId_teacher());
         Subject subject = new Subject(subjectDTO.getSubjectName(), subjectDTO.getTc());
-        subject.setListTeacher(List.of(teacher.get()));
         Subject newSubject = subjectRepository.save(subject);
-        List<Subject> subjectList = teacher.get().getSubjects();
-        subjectList.add(newSubject);
-        teacher.get().setSubjects(subjectList);
-        userRepository.save(teacher.get());
         return newSubject;
     }
 
@@ -54,7 +48,7 @@ public class SubjectServiceImpl implements ISubjectService {
         }
         Subject newSubject = new Subject(subjectDTO.getSubjectName(), subjectDTO.getTc());
         newSubject.setId(subject.get().getId());
-        return newSubject;
+        return subjectRepository.save(newSubject);
     }
 
     @Override

@@ -25,6 +25,6 @@ public class Major {
     @Column(name = "dean_name")
     private String deanName;
 
-    @OneToMany(mappedBy = "major")
+    @OneToMany(mappedBy = "major",cascade = CascadeType.ALL)
     List<CollegeClass> classes;
 }
