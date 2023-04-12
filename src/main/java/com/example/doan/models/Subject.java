@@ -35,8 +35,8 @@ public class Subject {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "teacher_subject",
-            joinColumns = @JoinColumn(name = "id_subject"),
-            inverseJoinColumns = @JoinColumn(name = "id_teacher"))
+            joinColumns = @JoinColumn(name = "id_teacher"),
+            inverseJoinColumns = @JoinColumn(name = "id_subject"))
     @JsonIgnore
     private List<User> listTeacher;
 }
