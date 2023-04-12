@@ -43,7 +43,7 @@ public class CollegeClassServiceImpl implements ICollegeClassService {
         if(major.isEmpty()){
             throw new NotFoundException("Major is not found");
         }
-        CollegeClass collegeClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(),major.get());
+        CollegeClass collegeClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(),collegeClassDTO.getSiso(),major.get());
         CollegeClass newClass = collegeClassRepository.save(collegeClass);
         return newClass;
     }
@@ -54,7 +54,7 @@ public class CollegeClassServiceImpl implements ICollegeClassService {
         if(collegeClass.isEmpty()){
             throw new NotFoundException("Class is not found");
         }
-        CollegeClass newClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(),majorRepository.findById(collegeClassDTO.getId_major()).get());
+        CollegeClass newClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(), collegeClassDTO.getSiso(), majorRepository.findById(collegeClassDTO.getId_major()).get());
         newClass.setId(collegeClass.get().getId());
         return collegeClassRepository.save(newClass);
     }

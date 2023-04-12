@@ -22,7 +22,7 @@ public class CollegeClassController extends BaseController<CollegeClass> {
     public ResponseEntity<?> getById(@PathVariable(name = "id")Long id){
         return this.resSuccess(collegeClassService.getClassById(id));
     }
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createClass(@RequestBody CollegeClassDTO collegeClassDTO){
         return this.resSuccess(collegeClassService.createClass(collegeClassDTO));
     }

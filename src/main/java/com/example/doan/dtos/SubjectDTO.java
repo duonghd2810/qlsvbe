@@ -9,12 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CollegeClassDTO {
-    private String className;
-
-    private String homeroomTeacher;
-
-    private Long siso;
-
-    private Long id_major;
+public class SubjectDTO {
+    private String subjectName;
+    private Integer tc;
+    private Long id_teacher;
 }

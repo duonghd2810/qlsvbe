@@ -22,7 +22,7 @@ public class Major {
     private String majorName;
 
     @Nationalized
-    @Column(name = "dean")
+    @Column(name = "dean_name")
     private String deanName;
 
     @OneToMany(mappedBy = "major")
