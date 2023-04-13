@@ -22,7 +22,7 @@ public class SubjectController extends BaseController<Subject> {
     public ResponseEntity<?> getSubjectById(@PathVariable(name = "id")Long id){
         return this.resSuccess(subjectService.getSubjectById(id));
     }
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createSubject(@RequestBody SubjectDTO subjectDTO){
         return this.resSuccess(subjectService.createSubject(subjectDTO));
     }

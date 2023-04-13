@@ -25,8 +25,6 @@ public class CollegeClass {
     @Nationalized
     private String homeroomTeacher;
 
-    private Long siso;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_major")
     @JsonIgnore
@@ -35,10 +33,9 @@ public class CollegeClass {
     @OneToMany(mappedBy = "collegeClass")
     List<User> userss;
 
-    public CollegeClass(String className, String homeroomTeacher,Long siso, Major major) {
+    public CollegeClass(String className, String homeroomTeacher, Major major) {
         this.className = className;
         this.homeroomTeacher = homeroomTeacher;
-        this.siso = siso;
         this.major = major;
     }
 }

@@ -12,5 +12,4 @@ import lombok.Setter;
 public class SubjectDTO {
     private String subjectName;
     private Integer tc;
-    private Long id_teacher;
 }

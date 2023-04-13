@@ -54,5 +54,5 @@ public class User{
     private List<CourseGrade> courseGrades;
 
     @ManyToMany(fetch = FetchType.EAGER,mappedBy = "listTeacher")
-    private List<Subject> subjects;
+    private List<ClassSection> classSections;
 }

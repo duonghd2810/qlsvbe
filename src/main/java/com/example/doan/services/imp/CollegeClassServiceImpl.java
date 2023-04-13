@@ -1,5 +1,6 @@
 package com.example.doan.services.imp;
 
+import com.example.doan.dtos.ClassMajorDTO;
 import com.example.doan.dtos.CollegeClassDTO;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.CollegeClass;
@@ -11,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +22,16 @@ public class CollegeClassServiceImpl implements ICollegeClassService {
     private MajorRepository majorRepository;
     @Autowired
     private CollegeClassRepository collegeClassRepository;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
-    public List<CollegeClass> getAllClass() {
-        return collegeClassRepository.findAll();
+    public List<ClassMajorDTO> getAllClass() {
+        List<CollegeClass> list = collegeClassRepository.findAll();
+        List<ClassMajorDTO> listResult = new ArrayList<>();
+        for(CollegeClass item: list){
+            ClassMajorDTO classMajorDTO = new ClassMajorDTO(item.getId(), item.getClassName(), item.getHomeroomTeacher(), item.getMajor().getId(), item.getMajor().getMajorName());
+            listResult.add(classMajorDTO);
+        }
+        return listResult;
     }
 
     @Override
@@ -43,7 +49,7 @@ public class CollegeClassServiceImpl implements ICollegeClassService {
         if(major.isEmpty()){
             throw new NotFoundException("Major is not found");
         }
-        CollegeClass collegeClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(),collegeClassDTO.getSiso(),major.get());
+        CollegeClass collegeClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(),major.get());
         CollegeClass newClass = collegeClassRepository.save(collegeClass);
         return newClass;
     }
@@ -54,7 +60,7 @@ public class CollegeClassServiceImpl implements ICollegeClassService {
         if(collegeClass.isEmpty()){
             throw new NotFoundException("Class is not found");
         }
-        CollegeClass newClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(), collegeClassDTO.getSiso(), majorRepository.findById(collegeClassDTO.getId_major()).get());
+        CollegeClass newClass = new CollegeClass(collegeClassDTO.getClassName(),collegeClassDTO.getHomeroomTeacher(), majorRepository.findById(collegeClassDTO.getId_major()).get());
         newClass.setId(collegeClass.get().getId());
         return collegeClassRepository.save(newClass);
     }

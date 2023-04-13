@@ -20,7 +20,7 @@ public class CourseGrade {
     @ManyToOne
     @MapsId("subjectId")
     @JoinColumn(name = "id_subject")
-    private Subject subjectCourse;
+    private ClassSection classSection;
     @ManyToOne
     @MapsId("studentId")
     @JoinColumn(name = "id_student")
