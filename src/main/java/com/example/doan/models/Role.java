@@ -16,15 +16,14 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_role")
     private Long id;
 
     private String roleName;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_user",
-            joinColumns = @JoinColumn(name = "id_role",referencedColumnName = "id_role"),
-            inverseJoinColumns = @JoinColumn(name = "id_user",referencedColumnName = "id_user"))
+            joinColumns = @JoinColumn(name = "id_role"),
+            inverseJoinColumns = @JoinColumn(name = "id_user"))
     @JsonIgnore
     private Set<User> userss;
 }

@@ -6,8 +6,8 @@ import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.User;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IUserService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +18,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
-    private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
-    private final Cloudinary cloudinary;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Override
     public List<User> getAll() {
@@ -64,6 +66,7 @@ public class UserServiceImpl implements IUserService {
         if(user.isEmpty()){
             throw new NotFoundException("User is not found");
         }
+        userRepository.deleteRecordInRoleUser(user.get().getId());
         userRepository.delete(user.get());
         return "Delete success";
     }
