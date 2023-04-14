@@ -24,6 +24,5 @@ public class Role {
     @JoinTable(name = "role_user",
             joinColumns = @JoinColumn(name = "id_role"),
             inverseJoinColumns = @JoinColumn(name = "id_user"))
-    @JsonIgnore
     private Set<User> userss;
 }

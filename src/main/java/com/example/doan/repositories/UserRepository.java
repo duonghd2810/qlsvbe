@@ -16,17 +16,21 @@ public interface UserRepository extends JpaRepository<User,Long> {
             " WHERE r.role_name = 'STUDENT'",
             nativeQuery = true)
     List<User> getAllStudent();
+
     @Query(value = "SELECT * FROM USERS u JOIN ROLE_USER ru ON u.id = ru.id_user " +
             "JOIN ROLES r ON ru.id_role = r.id" +
             " WHERE r.role_name = 'TEACHER'",
             nativeQuery = true)
     List<User> getAllTeacher();
+
     @Query(value = "SELECT * FROM USERS u JOIN ROLE_USER ru ON u.id = ru.id_user " +
             "JOIN ROLES r ON ru.id_role = r.id" +
             " WHERE r.role_name = 'STUDENT' AND u.id_class IS NULL",
             nativeQuery = true)
     List<User> getAllStudentHaveNotClass();
+
+    @Modifying
     @Transactional
-    @Query(value = "DELETE FROM ROLE_USER WHERE id_user = ?1",nativeQuery = true)
-    void deleteRecordInRoleUser(Long idUser);
+    @Query(value = "delete from ROLE_USER ru where ru.id_user = ?1 and ru.id_role=?2",nativeQuery = true)
+    void deleteRecordInRoleUser(Long idUser,Long idRole);
 }

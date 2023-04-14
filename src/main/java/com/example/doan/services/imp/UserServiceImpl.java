@@ -3,6 +3,7 @@ package com.example.doan.services.imp;
 import com.cloudinary.Cloudinary;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.exceptions.NotFoundException;
+import com.example.doan.models.Role;
 import com.example.doan.models.User;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IUserService;
@@ -66,7 +67,9 @@ public class UserServiceImpl implements IUserService {
         if(user.isEmpty()){
             throw new NotFoundException("User is not found");
         }
-        userRepository.deleteRecordInRoleUser(user.get().getId());
+        for(Role role: user.get().getRoless()){
+            userRepository.deleteRecordInRoleUser(id, role.getId());
+        }
         userRepository.delete(user.get());
         return "Delete success";
     }

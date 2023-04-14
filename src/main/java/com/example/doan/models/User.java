@@ -1,5 +1,6 @@
 package com.example.doan.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
@@ -46,7 +47,8 @@ public class User{
     @JoinColumn(name = "id_class")
     private CollegeClass collegeClass;
 
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "userss")
+    @ManyToMany(mappedBy = "userss",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Role> roless;
 
     @OneToMany(mappedBy = "studentCourse")
