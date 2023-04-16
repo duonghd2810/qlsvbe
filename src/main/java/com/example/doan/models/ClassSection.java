@@ -20,6 +20,8 @@ public class ClassSection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String maHp;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_subject")
     @JsonIgnore
@@ -28,10 +30,8 @@ public class ClassSection {
     @OneToMany(mappedBy = "classSection")
     private List<CourseGrade> courseGrades;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "teacher_subject",
-            joinColumns = @JoinColumn(name = "id_subject"),
-            inverseJoinColumns = @JoinColumn(name = "id_teacher"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_teacher")
     @JsonIgnore
-    private List<User> listTeacher;
+    private User teacher;
 }

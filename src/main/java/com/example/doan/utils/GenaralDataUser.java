@@ -28,6 +28,15 @@ public class GenaralDataUser {
         username.append(valueRandom);
         return username.toString().replace("-","");
     }
+    public static String generateSubjecCode(){
+        StringBuilder hp = new StringBuilder("HP");
+        for(int i = 0; i < 3; i++){
+            int number = randomNumber(0, digits.length() - 1);
+            char ch = digits.charAt(number);
+            hp.append(ch);
+        }
+        return hp.toString().replace("-","");
+    }
     public static String generatePassword(){
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 8; i++) {

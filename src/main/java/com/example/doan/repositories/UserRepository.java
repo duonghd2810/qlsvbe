@@ -31,6 +31,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "delete from ROLE_USER ru where ru.id_user = ?1 and ru.id_role=?2",nativeQuery = true)
+    @Query(value = "delete from ROLE_USER where id_user = ?1 and id_role = ?2",nativeQuery = true)
     void deleteRecordInRoleUser(Long idUser,Long idRole);
 }

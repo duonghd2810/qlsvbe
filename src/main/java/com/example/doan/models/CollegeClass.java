@@ -31,7 +31,7 @@ public class CollegeClass {
     private Major major;
 
     @OneToMany(mappedBy = "collegeClass")
-    List<User> userss;
+    List<User> studentlist;
 
     public CollegeClass(String className, String homeroomTeacher, Major major) {
         this.className = className;

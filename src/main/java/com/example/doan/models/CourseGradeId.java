@@ -15,5 +15,5 @@ import java.io.Serializable;
 @Setter
 public class CourseGradeId implements Serializable {
     private Long studentId;
-    private Long subjectId;
+    private Long classSectionId;
 }

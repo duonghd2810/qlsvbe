@@ -43,17 +43,21 @@ public class User{
 
     private String avatar;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //student
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_class")
+    @JsonIgnore
     private CollegeClass collegeClass;
 
-    @ManyToMany(mappedBy = "userss",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "userss",fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Role> roless;
 
+    //student
     @OneToMany(mappedBy = "studentCourse")
     private List<CourseGrade> courseGrades;
 
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "listTeacher")
+    //teacher
+    @OneToMany(mappedBy = "teacher")
     private List<ClassSection> classSections;
 }

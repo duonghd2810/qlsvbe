@@ -18,8 +18,8 @@ public class CourseGrade {
     private CourseGradeId courseGradeId;
 
     @ManyToOne
-    @MapsId("subjectId")
-    @JoinColumn(name = "id_subject")
+    @MapsId("classSectionId")
+    @JoinColumn(name = "id_sectionclass")
     private ClassSection classSection;
     @ManyToOne
     @MapsId("studentId")
@@ -31,4 +31,9 @@ public class CourseGrade {
     private Double hs2;
 
     private Double finaltest;
+
+    public CourseGrade(ClassSection classSection, User studentCourse) {
+        this.classSection = classSection;
+        this.studentCourse = studentCourse;
+    }
 }

@@ -7,7 +7,7 @@ import com.example.doan.models.Role;
 import com.example.doan.models.User;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IUserService;
-import org.modelmapper.ModelMapper;
+import com.example.doan.utils.ConvertObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,8 +22,6 @@ import java.util.UUID;
 public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private ModelMapper modelMapper;
     @Autowired
     private Cloudinary cloudinary;
 
@@ -56,7 +54,8 @@ public class UserServiceImpl implements IUserService {
         if(user.isEmpty()){
             throw new NotFoundException("User is not found");
         }
-        User newUser = this.modelMapper.map(userDTO,User.class);
+        User newUser = new User();
+        ConvertObject.convertUserDTOToUser(userDTO,newUser);
         newUser.setId(user.get().getId());
         return userRepository.save(newUser);
     }

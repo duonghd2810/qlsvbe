@@ -12,4 +12,6 @@ public interface ICollegeClassService {
     CollegeClass createClass(CollegeClassDTO collegeClassDTO);
     CollegeClass updateClass(CollegeClassDTO collegeClassDTO,Long id);
     String deleteClass(Long id);
+    CollegeClass addStudentToCollegeClass(Long idCollegeClass, Long idStudent);
+    String deleteStudent(Long idCollegeClass, Long idStudent);
 }

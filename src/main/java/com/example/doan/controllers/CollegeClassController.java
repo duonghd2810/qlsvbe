@@ -32,6 +32,16 @@ public class CollegeClassController extends BaseController<CollegeClass> {
                                          @PathVariable(name = "id")Long id){
         return this.resSuccess(collegeClassService.updateClass(collegeClassDTO,id));
     }
+    @PatchMapping("/{idClass}/addstudent/{idStudent}")
+    public ResponseEntity<?> addStudentToClass(@PathVariable(name = "idClass")Long idClass,
+                                               @PathVariable(name = "idStudent")Long idStudent){
+        return this.resSuccess(collegeClassService.addStudentToCollegeClass(idClass,idStudent));
+    }
+    @DeleteMapping("/{idClass}/deletestudent/{idStudent}")
+    public ResponseEntity<?> delStudentToClass(@PathVariable(name = "idClass")Long idClass,
+                                               @PathVariable(name = "idStudent")Long idStudent){
+        return this.resStringSuccess(collegeClassService.deleteStudent(idClass,idStudent));
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClass(@PathVariable(name = "id")Long id){
         return this.resStringSuccess(collegeClassService.deleteClass(id));

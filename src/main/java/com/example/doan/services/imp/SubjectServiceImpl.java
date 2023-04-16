@@ -7,6 +7,7 @@ import com.example.doan.models.User;
 import com.example.doan.repositories.SubjectRepository;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.ISubjectService;
+import com.example.doan.utils.GenaralDataUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,15 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public Subject createSubject(SubjectDTO subjectDTO) {
-        Subject subject = new Subject(subjectDTO.getSubjectName(), subjectDTO.getTc());
+        Subject oldSubject = new Subject();
+        String code = GenaralDataUser.generateSubjecCode();
+        do{
+            oldSubject = subjectRepository.findBySubjectCode(code);
+            if(oldSubject != null){
+                code = GenaralDataUser.generateSubjecCode();
+            }
+        }while(oldSubject != null);
+        Subject subject = new Subject(code,subjectDTO.getSubjectName(), subjectDTO.getTc());
         Subject newSubject = subjectRepository.save(subject);
         return newSubject;
     }

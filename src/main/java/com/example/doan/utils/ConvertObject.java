@@ -1,14 +1,16 @@
 package com.example.doan.utils;
 
+import com.example.doan.dtos.CourseGradeDTO;
 import com.example.doan.dtos.MajorDTO;
 import com.example.doan.dtos.UserDTO;
+import com.example.doan.models.CourseGrade;
 import com.example.doan.models.Major;
 import com.example.doan.models.User;
 
 public class ConvertObject {
     public static User convertUserDTOToUser(UserDTO userDTO, User user){
-        if(userDTO.getFullname()!= null){
-            user.setFullName(userDTO.getFullname());
+        if(userDTO.getFullName()!= null){
+            user.setFullName(userDTO.getFullName());
         }
         if(userDTO.getDateOfBirth() != null){
             user.setDateOfBirth(userDTO.getDateOfBirth());
@@ -39,5 +41,17 @@ public class ConvertObject {
             major.setDeanName(majorDTO.getDeanName());
         }
         return major;
+    }
+    public static CourseGrade convertCourseGradeDTOToCourseGrade(CourseGradeDTO courseGradeDTO,CourseGrade courseGrade){
+        if(courseGradeDTO.getHs1() != null){
+            courseGrade.setHs1(courseGradeDTO.getHs1());
+        }
+        if(courseGradeDTO.getHs2() != null){
+            courseGrade.setHs1(courseGradeDTO.getHs2());
+        }
+        if(courseGradeDTO.getFinaltest() != null){
+            courseGrade.setFinaltest(courseGradeDTO.getFinaltest());
+        }
+        return courseGrade;
     }
 }

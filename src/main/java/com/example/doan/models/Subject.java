@@ -13,19 +13,25 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "subject")
+@Table(name = "subjects")
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String subjectCode;
     @Nationalized
     private String subjectName;
 
     private Integer tc;
 
     private double price = 380000;
+
     public Subject(String subjectName, Integer tc) {
+        this.subjectName = subjectName;
+        this.tc = tc;
+    }
+    public Subject(String code,String subjectName, Integer tc) {
+        this.subjectCode = code;
         this.subjectName = subjectName;
         this.tc = tc;
     }
