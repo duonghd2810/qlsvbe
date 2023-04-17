@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @Service
 public class ClassSectionServiceImpl implements IClassSectionService {
-    public static int MA  = 1;
     @Autowired
     private SubjectRepository subjectRepository;
     @Autowired
@@ -33,11 +32,24 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         }
         ClassSection classSection = new ClassSection();
         classSection.setSubjectt(subject.get());
-        String mahp = subject.get().getSubjectCode() + "." + MA;
-        classSection.setMaHp(mahp);
         ClassSection newClassSection =  classSectionRepository.save(classSection);
-        MA++;
         return newClassSection;
+    }
+
+    @Override
+    public List<ClassSectionDTO> getAllClassSection() {
+        List<ClassSection> classSections = classSectionRepository.getListClassSection();
+        List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
+        for(ClassSection item:classSections){
+            ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
+            if(item.getTeacher() != null){
+                classSectionDTO.setId_teacher(item.getTeacher().getId());
+                classSectionDTO.setTeacherName(item.getTeacher().getFullName());
+            }
+            classSectionDTOList.add(classSectionDTO);
+        }
+        return classSectionDTOList;
     }
 
     @Override
@@ -49,7 +61,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         List<ClassSection> classSections = classSectionRepository.getListClassByIdSubject(idSubject);
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item:classSections){
-            ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getMaHp(),item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
+            ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());

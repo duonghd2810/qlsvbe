@@ -14,6 +14,10 @@ public class ClassSectionController extends BaseController<ClassSection> {
     @Autowired
     private IClassSectionService iClassSection;
 
+    @GetMapping
+    public ResponseEntity<?> getAllClassSection(){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.getAllClassSection());
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> getAllClassSectionBySubject(@PathVariable(name = "id")Long id){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.getListByIdSubject(id));
@@ -25,11 +29,11 @@ public class ClassSectionController extends BaseController<ClassSection> {
 
     @PostMapping("/{id}")
     public ResponseEntity<?> createClassSection(@PathVariable(name = "id")Long id){
-        return this.resSuccess(iClassSection.createClassSection(id));
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.createClassSection(id));
     }
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/teacher/{idTeacher}")
     public ResponseEntity<?> updateClassSection(@PathVariable(name = "id")Long idClassSection,
-                                                @RequestParam(name = "idteacher")Long idteacher){
+                                                @PathVariable(name = "idTeacher")Long idteacher){
         return this.resSuccess(iClassSection.updateTeacherForClass(idClassSection,idteacher));
     }
     @DeleteMapping("/{id}")

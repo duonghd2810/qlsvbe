@@ -47,7 +47,7 @@ public class ConvertObject {
             courseGrade.setHs1(courseGradeDTO.getHs1());
         }
         if(courseGradeDTO.getHs2() != null){
-            courseGrade.setHs1(courseGradeDTO.getHs2());
+            courseGrade.setHs2(courseGradeDTO.getHs2());
         }
         if(courseGradeDTO.getFinaltest() != null){
             courseGrade.setFinaltest(courseGradeDTO.getFinaltest());

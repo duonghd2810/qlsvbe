@@ -27,11 +27,11 @@ public class ClassSection {
     @JsonIgnore
     private Subject subjectt;
 
-    @OneToMany(mappedBy = "classSection")
-    private List<CourseGrade> courseGrades;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_teacher")
     @JsonIgnore
     private User teacher;
+
+//    @OneToMany(mappedBy = "classSection")
+//    private List<CourseGrade> courseGrades;
 }

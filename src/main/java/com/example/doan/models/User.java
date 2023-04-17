@@ -54,8 +54,8 @@ public class User{
     private Set<Role> roless;
 
     //student
-    @OneToMany(mappedBy = "studentCourse")
-    private List<CourseGrade> courseGrades;
+//    @OneToMany(mappedBy = "studentCourse")
+//    private List<CourseGrade> courseGrades;
 
     //teacher
     @OneToMany(mappedBy = "teacher")

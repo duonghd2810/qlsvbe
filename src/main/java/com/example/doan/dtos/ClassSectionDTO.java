@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class ClassSectionDTO {
     private Long id;
-    private String maHp;
+    private String subjectCode;
     private String tenHp;
     private Long id_teacher;
     private String teacherName;
@@ -19,7 +19,7 @@ public class ClassSectionDTO {
 
     public ClassSectionDTO(Long id, String maHp, String tenHp, Integer soTc) {
         this.id = id;
-        this.maHp = maHp;
+        this.subjectCode = maHp;
         this.tenHp = tenHp;
         this.soTc = soTc;
     }

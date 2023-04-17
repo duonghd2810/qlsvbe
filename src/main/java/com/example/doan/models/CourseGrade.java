@@ -17,14 +17,14 @@ public class CourseGrade {
     @EmbeddedId
     private CourseGradeId courseGradeId;
 
-    @ManyToOne
-    @MapsId("classSectionId")
-    @JoinColumn(name = "id_sectionclass")
-    private ClassSection classSection;
-    @ManyToOne
-    @MapsId("studentId")
-    @JoinColumn(name = "id_student")
-    private User studentCourse;
+//    @ManyToOne
+//    @MapsId("classSectionId")
+//    @JoinColumn(name = "id_sectionclass")
+//    private ClassSection classSection;
+//    @ManyToOne
+//    @MapsId("studentId")
+//    @JoinColumn(name = "id_student")
+//    private User studentCourse;
 
     private Double hs1;
 
@@ -32,8 +32,7 @@ public class CourseGrade {
 
     private Double finaltest;
 
-    public CourseGrade(ClassSection classSection, User studentCourse) {
-        this.classSection = classSection;
-        this.studentCourse = studentCourse;
+    public CourseGrade(CourseGradeId courseGradeId) {
+        this.courseGradeId = courseGradeId;
     }
 }

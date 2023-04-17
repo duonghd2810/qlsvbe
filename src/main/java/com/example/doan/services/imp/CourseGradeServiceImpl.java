@@ -5,6 +5,7 @@ import com.example.doan.exceptions.DuplicateException;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.ClassSection;
 import com.example.doan.models.CourseGrade;
+import com.example.doan.models.CourseGradeId;
 import com.example.doan.models.User;
 import com.example.doan.repositories.ClassSectionRepository;
 import com.example.doan.repositories.CourseGradeRepository;
@@ -35,12 +36,9 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
         if(student.isEmpty()){
             throw new NotFoundException("Student is not found");
         }
+        CourseGradeId courseGradeId = new CourseGradeId(student.get().getId(),classSection.get().getId());
         CourseGrade courseGrade = new CourseGrade();
-        courseGrade.setClassSection(classSection.get());
-        if(courseGrade.getStudentCourse() != null && courseGrade.getStudentCourse().getId() == student.get().getId()){
-            throw new DuplicateException("Student has been exists in section class");
-        }
-        courseGrade.setStudentCourse(student.get());
+        courseGrade.setCourseGradeId(courseGradeId);
         return courseGradeRepository.save(courseGrade);
     }
 
@@ -54,7 +52,11 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
         if(student.isEmpty()){
             throw new NotFoundException("Student is not found");
         }
-        CourseGrade courseGrade = courseGradeRepository.getCourseGradeByClassSectionAndAndStudentCourse(classSection.get(),student.get());
+        CourseGradeId courseGradeId = new CourseGradeId(student.get().getId(),classSection.get().getId());
+        CourseGrade courseGrade = courseGradeRepository.findCourseGradeByCourseGradeId(courseGradeId);
+        if(courseGrade == null){
+            throw new NotFoundException("This student has not exists in this section class");
+        }
         ConvertObject.convertCourseGradeDTOToCourseGrade(courseGradeDTO,courseGrade);
         CourseGrade newCourseGrade = courseGradeRepository.save(courseGrade);
         return newCourseGrade;
