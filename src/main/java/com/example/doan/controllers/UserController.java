@@ -1,6 +1,7 @@
 package com.example.doan.controllers;
 
 import com.example.doan.bases.BaseController;
+import com.example.doan.dtos.PasswordDTO;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.models.User;
 import com.example.doan.services.IUserService;
@@ -39,14 +40,19 @@ public class UserController extends BaseController<User> {
                                         @PathVariable(name = "id")Long id){
         return this.resSuccess(userService.updateUser(userDTO,id));
     }
+    @PatchMapping("/changepass/{id}")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordDTO passwordDTO,
+                                        @PathVariable(name = "id")Long id){
+        return this.resSuccess(userService.changePassword(id,passwordDTO));
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable(name = "id")Long id){
         return this.resStringSuccess(userService.deleteUser(id));
     }
-    @PostMapping("/{id}/upload")
-    public ResponseEntity<?> uploadAvatar(@RequestParam("image")MultipartFile multipartFile,
-                                          @PathVariable(name = "id")Long id) throws IOException {
-        String image = userService.uploadAvatar(multipartFile,id);
-        return this.resStringSuccess(image);
-    }
+//    @PostMapping("/{id}/upload")
+//    public ResponseEntity<?> uploadAvatar(@RequestParam("image")MultipartFile multipartFile,
+//                                          @PathVariable(name = "id")Long id) throws IOException {
+//        String image = userService.uploadAvatar(multipartFile,id);
+//        return this.resStringSuccess(image);
+//    }
 }

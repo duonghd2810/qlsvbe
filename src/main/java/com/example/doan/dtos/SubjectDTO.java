@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SubjectDTO {
+    private Long id_major;
     private String subjectName;
     private Integer tc;
 }

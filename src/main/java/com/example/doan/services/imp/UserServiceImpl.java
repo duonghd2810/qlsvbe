@@ -1,6 +1,7 @@
 package com.example.doan.services.imp;
 
 import com.cloudinary.Cloudinary;
+import com.example.doan.dtos.PasswordDTO;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.Role;
@@ -9,6 +10,7 @@ import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IUserService;
 import com.example.doan.utils.ConvertObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +22,8 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements IUserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -56,6 +60,7 @@ public class UserServiceImpl implements IUserService {
         }
         User newUser = new User();
         ConvertObject.convertUserDTOToUser(userDTO,newUser);
+        newUser.setPassword(user.get().getPassword());
         newUser.setId(user.get().getId());
         return userRepository.save(newUser);
     }
@@ -74,18 +79,29 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public String uploadAvatar(MultipartFile multipartFile,Long id) throws IOException {
+    public User changePassword(Long id, PasswordDTO passwordDTO) {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
             throw new NotFoundException("User is not found");
         }
-        String url = cloudinary.uploader()
-                .upload(multipartFile.getBytes(),
-                        Map.of("public_id", UUID.randomUUID().toString()))
-                .get("url")
-                .toString();
-        user.get().setAvatar(url);
-        userRepository.save(user.get());
-        return url;
+        user.get().setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
+        User newUser = userRepository.save(user.get());
+        return newUser;
     }
+
+//    @Override
+//    public String uploadAvatar(MultipartFile multipartFile,Long id) throws IOException {
+//        Optional<User> user = userRepository.findById(id);
+//        if(user.isEmpty()){
+//            throw new NotFoundException("User is not found");
+//        }
+//        String url = cloudinary.uploader()
+//                .upload(multipartFile.getBytes(),
+//                        Map.of("public_id", UUID.randomUUID().toString()))
+//                .get("url")
+//                .toString();
+//        user.get().setAvatar(url);
+//        userRepository.save(user.get());
+//        return url;
+//    }
 }

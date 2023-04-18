@@ -26,11 +26,18 @@ public class Subject {
 
     private double price = 380000;
 
-    public Subject(String subjectName, Integer tc) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_major")
+    @JsonIgnore
+    private Major majorSubject;
+
+    public Subject(Major major, String subjectName, Integer tc) {
+        this.majorSubject = major;
         this.subjectName = subjectName;
         this.tc = tc;
     }
-    public Subject(String code,String subjectName, Integer tc) {
+    public Subject(Major major,String code,String subjectName, Integer tc) {
+        this.majorSubject = major;
         this.subjectCode = code;
         this.subjectName = subjectName;
         this.tc = tc;

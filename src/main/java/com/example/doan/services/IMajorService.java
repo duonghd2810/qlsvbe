@@ -11,4 +11,6 @@ public interface IMajorService {
     List<Major> getListMajor();
     Major updateMajor(MajorDTO majorDTO, Long id);
     String deleteMajor(Long id);
+    Major addStudentToMajor(Long idMajor, Long idStudent);
+    String deleteStudentFromMajor(Long idMajor, Long idStudent);
 }

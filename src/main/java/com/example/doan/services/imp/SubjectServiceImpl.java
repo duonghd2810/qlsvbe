@@ -2,8 +2,9 @@ package com.example.doan.services.imp;
 
 import com.example.doan.dtos.SubjectDTO;
 import com.example.doan.exceptions.NotFoundException;
+import com.example.doan.models.Major;
 import com.example.doan.models.Subject;
-import com.example.doan.models.User;
+import com.example.doan.repositories.MajorRepository;
 import com.example.doan.repositories.SubjectRepository;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.ISubjectService;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Service
 public class SubjectServiceImpl implements ISubjectService {
     @Autowired
-    private UserRepository userRepository;
+    private MajorRepository majorRepository;
     @Autowired
     private SubjectRepository subjectRepository;
     @Override
@@ -36,6 +37,10 @@ public class SubjectServiceImpl implements ISubjectService {
 
     @Override
     public Subject createSubject(SubjectDTO subjectDTO) {
+        Optional<Major> major = majorRepository.findById(subjectDTO.getId_major());
+        if(major.isEmpty()){
+            throw new NotFoundException("Major is not found");
+        }
         Subject oldSubject = new Subject();
         String code = GenaralDataUser.generateSubjecCode();
         do{
@@ -44,7 +49,7 @@ public class SubjectServiceImpl implements ISubjectService {
                 code = GenaralDataUser.generateSubjecCode();
             }
         }while(oldSubject != null);
-        Subject subject = new Subject(code,subjectDTO.getSubjectName(), subjectDTO.getTc());
+        Subject subject = new Subject(major.get(),code,subjectDTO.getSubjectName(), subjectDTO.getTc());
         Subject newSubject = subjectRepository.save(subject);
         return newSubject;
     }
@@ -55,7 +60,8 @@ public class SubjectServiceImpl implements ISubjectService {
         if(subject.isEmpty()){
             throw new NotFoundException("Subject is not found");
         }
-        Subject newSubject = new Subject(subjectDTO.getSubjectName(), subjectDTO.getTc());
+        Subject newSubject = new Subject(majorRepository.findById(subjectDTO.getId_major()).get(),subjectDTO.getSubjectName(), subjectDTO.getTc());
+        newSubject.setSubjectCode(subject.get().getSubjectCode());
         newSubject.setId(subject.get().getId());
         return subjectRepository.save(newSubject);
     }

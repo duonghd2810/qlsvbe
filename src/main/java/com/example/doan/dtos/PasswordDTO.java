@@ -9,14 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ClassMajorDTO {
-    private Long id;
-
-    private String className;
-
-    private String homeroomTeacher;
-
-    private Long id_major;
-
-    private String majorName;
+public class PasswordDTO {
+    private String password;
 }

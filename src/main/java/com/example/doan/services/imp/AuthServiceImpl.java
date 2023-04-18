@@ -2,7 +2,6 @@ package com.example.doan.services.imp;
 
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.exceptions.BadRequestException;
-import com.example.doan.exceptions.DuplicateException;
 import com.example.doan.models.Role;
 import com.example.doan.payload.AuthenticationRequest;
 import com.example.doan.payload.AuthenticationResponse;
@@ -15,7 +14,6 @@ import com.example.doan.utils.ConvertObject;
 import com.example.doan.utils.GenaralDataUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,22 +26,21 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class AuthServiceImpl implements IAuthService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private JwtService jwtService;
-
-    @Autowired
-    private RoleRepository roleRepository;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private MyUserDetailService myUserDetailService;
+
     @Autowired
     private IMailService mailService;
 
@@ -159,7 +156,7 @@ public class AuthServiceImpl implements IAuthService {
                     request.getUsername(),request.getPassword()
             ));
         }catch(BadCredentialsException ex){
-            throw new BadRequestException("Incorrect email or password");
+            throw new BadRequestException("Incorrect username or password");
         }
         final UserDetails userDetails = myUserDetailService.loadUserByUsername(request.getUsername());
         final String jwt = jwtService.generateToken(userDetails);

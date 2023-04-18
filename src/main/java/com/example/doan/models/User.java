@@ -45,9 +45,9 @@ public class User{
 
     //student
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_class")
+    @JoinColumn(name = "id_major")
     @JsonIgnore
-    private CollegeClass collegeClass;
+    private Major major;
 
     @ManyToMany(mappedBy = "userss",fetch = FetchType.EAGER)
     @JsonIgnore

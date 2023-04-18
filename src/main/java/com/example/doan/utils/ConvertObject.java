@@ -30,6 +30,9 @@ public class ConvertObject {
         if(userDTO.getPhone() != null){
             user.setPhone(userDTO.getPhone());
         }
+        if(userDTO.getUsername() != null){
+            user.setUsername(userDTO.getUsername());
+        }
         return user;
     }
 

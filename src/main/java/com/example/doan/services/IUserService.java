@@ -1,10 +1,9 @@
 package com.example.doan.services;
 
+import com.example.doan.dtos.PasswordDTO;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.models.User;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IUserService {
@@ -14,5 +13,6 @@ public interface IUserService {
     User getUserById(Long id);
     User updateUser(UserDTO userDTO,Long id);
     String deleteUser(Long id);
-    String uploadAvatar(MultipartFile multipartFile,Long id) throws IOException;
+    User changePassword(Long id, PasswordDTO passwordDTO);
+//    String uploadAvatar(MultipartFile multipartFile,Long id) throws IOException;
 }

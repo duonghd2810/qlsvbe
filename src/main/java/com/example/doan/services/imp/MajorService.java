@@ -3,9 +3,12 @@ package com.example.doan.services.imp;
 import com.example.doan.dtos.MajorDTO;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.Major;
+import com.example.doan.models.User;
 import com.example.doan.repositories.MajorRepository;
+import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IMajorService;
 import com.example.doan.utils.ConvertObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,10 @@ import java.util.Optional;
 public class MajorService implements IMajorService {
     @Autowired
     private MajorRepository majorRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public Major getMajorById(Long id) {
@@ -58,5 +65,41 @@ public class MajorService implements IMajorService {
         }
         majorRepository.delete(major.get());
         return "Delete success";
+    }
+
+    @Override
+    public Major addStudentToMajor(Long idMajor, Long idStudent) {
+        Optional<Major> major = majorRepository.findById(idMajor);
+        if(major.isEmpty()){
+            throw new NotFoundException("Major is not found");
+        }
+        Optional<User> student = userRepository.findById(idStudent);
+        if(student.isEmpty()){
+            throw new NotFoundException("Student is not found");
+        }
+        Major major1 = this.modelMapper.map(major.get(),Major.class);
+        student.get().setMajor(major.get());
+        userRepository.save(student.get());
+        major1.setStudents(List.of(student.get()));
+        return major1;
+    }
+
+    @Override
+    public String deleteStudentFromMajor(Long idMajor, Long idStudent) {
+        Optional<Major> major = majorRepository.findById(idMajor);
+        if(major.isEmpty()){
+            throw new NotFoundException("Major is not found");
+        }
+        Optional<User> student = userRepository.findById(idStudent);
+        if(student.isEmpty()){
+            throw new NotFoundException("Student is not found");
+        }
+        student.get().setMajor(null);
+        userRepository.save(student.get());
+        if(major.get().getStudents().contains(student.get())){
+            major.get().getStudents().remove(student.get());
+        }
+        majorRepository.save(major.get());
+        return "Delete student from major success";
     }
 }

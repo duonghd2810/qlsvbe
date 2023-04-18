@@ -26,5 +26,8 @@ public class Major {
     private String deanName;
 
     @OneToMany(mappedBy = "major",cascade = CascadeType.ALL)
-    List<CollegeClass> classes;
+    List<User> students;
+
+    @OneToMany(mappedBy = "majorSubject")
+    List<Subject> subjects;
 }
