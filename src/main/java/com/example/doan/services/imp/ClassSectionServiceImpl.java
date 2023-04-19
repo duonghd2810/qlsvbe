@@ -53,15 +53,16 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     }
 
     @Override
-    public List<ClassSectionDTO> getListByIdSubject(Long idSubject) {
-        Optional<Subject> subject = subjectRepository.findById(idSubject);
-        if(subject.isEmpty()){
-            throw new NotFoundException("Subject is not found");
+    public List<ClassSectionDTO> getListClassSectionByMajor(Long idStudent) {
+        Optional<User> student = userRepository.findById(idStudent);
+        if(student.isEmpty()){
+            throw new NotFoundException("Student is not found");
         }
-        List<ClassSection> classSections = classSectionRepository.getListClassByIdSubject(idSubject);
+        List<ClassSection> classSections = classSectionRepository.getListClassSectionByMajor(idStudent);
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
-        for(ClassSection item:classSections){
-            ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
+        for(ClassSection item : classSections){
+            ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());

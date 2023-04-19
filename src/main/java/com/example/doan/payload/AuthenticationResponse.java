@@ -14,5 +14,14 @@ public class AuthenticationResponse {
     private Long userId;
     private String fullName;
     private String avatar;
+    private Long majorId;
     private List<String> roleSet;
+
+    public AuthenticationResponse(String token, Long userId, String fullName, String avatar, List<String> roleSet) {
+        this.token = token;
+        this.userId = userId;
+        this.fullName = fullName;
+        this.avatar = avatar;
+        this.roleSet = roleSet;
+    }
 }

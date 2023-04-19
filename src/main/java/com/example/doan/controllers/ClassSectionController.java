@@ -18,9 +18,9 @@ public class ClassSectionController extends BaseController<ClassSection> {
     public ResponseEntity<?> getAllClassSection(){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.getAllClassSection());
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getAllClassSectionBySubject(@PathVariable(name = "id")Long id){
-        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.getListByIdSubject(id));
+    @GetMapping("/{idStudent}")
+    public ResponseEntity<?> getListClassSectionByMajor(@PathVariable(name = "idStudent")Long idStudent){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.getListClassSectionByMajor(idStudent));
     }
     @GetMapping("/teacher/{id}")
     public ResponseEntity<?> getAllClassSectionByTeacher(@PathVariable(name = "id")Long id){

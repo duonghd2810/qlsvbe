@@ -15,6 +15,7 @@ import com.example.doan.utils.ConvertObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,13 +34,24 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
             throw new NotFoundException("Class section is not found");
         }
         Optional<User> student = userRepository.findById(idStudent);
-        if(student.isEmpty()){
+        if(student.isEmpty()) {
             throw new NotFoundException("Student is not found");
         }
+        List<CourseGrade> courseGradeList = courseGradeRepository.findByStudent(student.get().getId());
+        if(courseGradeList.size() != 0){
+            for(CourseGrade courseGrade:courseGradeList){
+                Optional<ClassSection> classSection1 = classSectionRepository.findById(courseGrade.getCourseGradeId().getClassSectionId());
+                if(classSection.get().getSubjectt().getId() == classSection1.get().getSubjectt().getId()){
+                    throw new DuplicateException("Bạn đã đăng ký học phần này rồi");
+                }
+            }
+        }
         CourseGradeId courseGradeId = new CourseGradeId(student.get().getId(),classSection.get().getId());
-        CourseGrade courseGrade = new CourseGrade();
+        CourseGrade courseGrade = courseGradeRepository.findCourseGradeByCourseGradeId(courseGradeId);
+
         courseGrade.setCourseGradeId(courseGradeId);
-        return courseGradeRepository.save(courseGrade);
+        CourseGrade newCourseGrade = courseGradeRepository.save(courseGrade);
+        return newCourseGrade;
     }
 
     @Override

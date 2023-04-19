@@ -5,6 +5,7 @@ import com.example.doan.dtos.SubjectDTO;
 import com.example.doan.models.Subject;
 import com.example.doan.services.ISubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class SubjectController extends BaseController<Subject> {
 
     @GetMapping
     public ResponseEntity<?> getAllSubject(){
-        return this.resListSuccess(subjectService.getAllSubject());
+        return ResponseEntity.status(HttpStatus.OK.value()).body(subjectService.getAllSubject());
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getSubjectById(@PathVariable(name = "id")Long id){

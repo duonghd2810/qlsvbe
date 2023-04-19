@@ -1,17 +1,18 @@
 package com.example.doan.services.imp;
 
+import com.example.doan.dtos.ResponseSubjectDTO;
 import com.example.doan.dtos.SubjectDTO;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.Major;
 import com.example.doan.models.Subject;
 import com.example.doan.repositories.MajorRepository;
 import com.example.doan.repositories.SubjectRepository;
-import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.ISubjectService;
 import com.example.doan.utils.GenaralDataUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,15 @@ public class SubjectServiceImpl implements ISubjectService {
     @Autowired
     private SubjectRepository subjectRepository;
     @Override
-    public List<Subject> getAllSubject() {
-        return subjectRepository.findAll();
+    public List<ResponseSubjectDTO> getAllSubject() {
+        List<Subject> subjects = subjectRepository.getAllSubject();
+        List<ResponseSubjectDTO> responseSubjectDTOS = new ArrayList<>();
+        for(Subject subject: subjects){
+            ResponseSubjectDTO responseSubjectDTO = new ResponseSubjectDTO(subject.getId(),subject.getSubjectCode(),subject.getSubjectName(), subject.getPrice(),
+                                                            subject.getTc(),subject.getMajorSubject().getId(),subject.getMajorSubject().getMajorName());
+            responseSubjectDTOS.add(responseSubjectDTO);
+        }
+        return responseSubjectDTOS;
     }
 
     @Override
