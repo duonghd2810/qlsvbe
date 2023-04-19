@@ -8,7 +8,7 @@ import java.util.List;
 public interface IClassSectionService {
     ClassSection createClassSection(Long idsubject);
     List<ClassSectionDTO> getAllClassSection();
-    List<ClassSectionDTO> getListClassSectionByMajor(Long idStudent);
+    List<ClassSectionDTO> getListClassSectionByStudent(Long idStudent);
     ClassSection updateTeacherForClass(Long idClassSection,Long idTeacher);
     String deleteClassSection(Long idClassSection);
     List<ClassSection> getListByTeacher(Long idTeacher);

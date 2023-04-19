@@ -76,7 +76,7 @@ public class AuthServiceImpl implements IAuthService {
         final UserDetails userDetails = myUserDetailService.loadUserByUsername(newUser.getUsername());
         final String jwt = jwtService.generateToken(userDetails);
 
-        return new AuthenticationResponse(jwt, newUser.getId(), newUser.getFullName(), newUser.getAvatar(), newUser.getMajor().getId(),List.of(role.getRoleName()));
+        return new AuthenticationResponse(jwt, newUser.getId(), newUser.getFullName(), newUser.getAvatar(),List.of(role.getRoleName()));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AuthServiceImpl implements IAuthService {
         final UserDetails userDetails = myUserDetailService.loadUserByUsername(newUser.getUsername());
         final String jwt = jwtService.generateToken(userDetails);
 
-        return new AuthenticationResponse(jwt, newUser.getId(), newUser.getFullName(), newUser.getAvatar(), newUser.getMajor().getId(), List.of(role.getRoleName()));
+        return new AuthenticationResponse(jwt, newUser.getId(), newUser.getFullName(), newUser.getAvatar(), List.of(role.getRoleName()));
     }
 
     @Override
@@ -165,6 +165,6 @@ public class AuthServiceImpl implements IAuthService {
         Set<Role> roleSet = user.getRoless();
         if(roleSet.size() > 0)
             roleSet.forEach(item -> roles.add(item.getRoleName()));
-        return new AuthenticationResponse(jwt,user.getId(),user.getFullName(),user.getAvatar(), user.getMajor().getId(),roles);
+        return new AuthenticationResponse(jwt,user.getId(),user.getFullName(),user.getAvatar(),roles);
     }
 }

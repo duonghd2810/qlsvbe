@@ -53,12 +53,12 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     }
 
     @Override
-    public List<ClassSectionDTO> getListClassSectionByMajor(Long idStudent) {
+    public List<ClassSectionDTO> getListClassSectionByStudent(Long idStudent) {
         Optional<User> student = userRepository.findById(idStudent);
         if(student.isEmpty()){
             throw new NotFoundException("Student is not found");
         }
-        List<ClassSection> classSections = classSectionRepository.getListClassSectionByMajor(idStudent);
+        List<ClassSection> classSections = classSectionRepository.getListClassSectionByStudent(idStudent);
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item : classSections){
             ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),

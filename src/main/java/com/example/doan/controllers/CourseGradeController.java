@@ -5,6 +5,7 @@ import com.example.doan.dtos.CourseGradeDTO;
 import com.example.doan.models.CourseGrade;
 import com.example.doan.services.ICourseGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,10 @@ public class CourseGradeController extends BaseController<CourseGrade> {
     @Autowired
     private ICourseGradeService iCourseGradeService;
 
+    @GetMapping("/studyresult/{idStudent}")
+    public ResponseEntity<?> getAllCourseByStudent(@PathVariable(name = "idStudent")Long idStudent){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iCourseGradeService.getAllCourseForStudent(idStudent));
+    }
     @PostMapping("/{idClass}/registclasssection/{idStudent}")
     public ResponseEntity<?> registClassSection(@PathVariable(name = "idClass")Long idClassSection,
                                                 @PathVariable(name = "idStudent")Long idStudent){

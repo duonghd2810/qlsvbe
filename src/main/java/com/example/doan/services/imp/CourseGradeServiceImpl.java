@@ -1,6 +1,8 @@
 package com.example.doan.services.imp;
 
 import com.example.doan.dtos.CourseGradeDTO;
+import com.example.doan.dtos.ResponseCourseForStudent;
+import com.example.doan.dtos.ResponseSubjectDTO;
 import com.example.doan.exceptions.DuplicateException;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.ClassSection;
@@ -15,6 +17,7 @@ import com.example.doan.utils.ConvertObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,19 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
     private UserRepository userRepository;
     @Autowired
     private CourseGradeRepository courseGradeRepository;
+
+    @Override
+    public List<ResponseCourseForStudent> getAllCourseForStudent(Long idStudent) {
+        List<CourseGrade> courseGrades = courseGradeRepository.findByStudent(idStudent);
+        List<ResponseCourseForStudent> courseForStudents = new ArrayList<>();
+        for(CourseGrade courseGrade: courseGrades){
+            ClassSection classSection = classSectionRepository.getClassSectionById(courseGrade.getCourseGradeId().getClassSectionId());
+            ResponseCourseForStudent responseCourse = new ResponseCourseForStudent(classSection.getId(), classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc(),
+                                                                        courseGrade.getHs1(), courseGrade.getHs2(), courseGrade.getFinaltest());
+            courseForStudents.add(responseCourse);
+        }
+        return courseForStudents;
+    }
 
     @Override
     public CourseGrade registClassSection(Long idClassSection, Long idStudent) {
@@ -47,8 +63,7 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
             }
         }
         CourseGradeId courseGradeId = new CourseGradeId(student.get().getId(),classSection.get().getId());
-        CourseGrade courseGrade = courseGradeRepository.findCourseGradeByCourseGradeId(courseGradeId);
-
+        CourseGrade courseGrade = new CourseGrade();
         courseGrade.setCourseGradeId(courseGradeId);
         CourseGrade newCourseGrade = courseGradeRepository.save(courseGrade);
         return newCourseGrade;
