@@ -12,32 +12,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/classsection")
 public class ClassSectionController extends BaseController<ClassSection> {
     @Autowired
-    private IClassSectionService iClassSection;
+    private IClassSectionService iClassSectionService;
 
     @GetMapping
     public ResponseEntity<?> getAllClassSection(){
-        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.getAllClassSection());
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getAllClassSection());
     }
     @GetMapping("/{idStudent}")
     public ResponseEntity<?> getListClassSectionByMajor(@PathVariable(name = "idStudent")Long idStudent){
-        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.getListClassSectionByStudent(idStudent));
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getListClassSectionByStudent(idStudent));
     }
     @GetMapping("/teacher/{id}")
     public ResponseEntity<?> getAllClassSectionByTeacher(@PathVariable(name = "id")Long id){
-        return this.resListSuccess(iClassSection.getListByTeacher(id));
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getListByTeacher(id));
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<?> createClassSection(@PathVariable(name = "id")Long id){
-        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSection.createClassSection(id));
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.createClassSection(id));
     }
     @PatchMapping("/{id}/teacher/{idTeacher}")
     public ResponseEntity<?> updateClassSection(@PathVariable(name = "id")Long idClassSection,
                                                 @PathVariable(name = "idTeacher")Long idteacher){
-        return this.resSuccess(iClassSection.updateTeacherForClass(idClassSection,idteacher));
+        return this.resSuccess(iClassSectionService.updateTeacherForClass(idClassSection,idteacher));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClassSection(@PathVariable(name = "id")Long idClassSection){
-        return this.resStringSuccess(iClassSection.deleteClassSection(idClassSection));
+        return this.resStringSuccess(iClassSectionService.deleteClassSection(idClassSection));
     }
 }
