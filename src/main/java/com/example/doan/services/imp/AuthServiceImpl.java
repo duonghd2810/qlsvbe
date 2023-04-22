@@ -12,7 +12,6 @@ import com.example.doan.services.IAuthService;
 import com.example.doan.services.IMailService;
 import com.example.doan.utils.ConvertObject;
 import com.example.doan.utils.GenaralDataUser;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

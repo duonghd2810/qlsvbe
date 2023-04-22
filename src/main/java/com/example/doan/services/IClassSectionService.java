@@ -12,4 +12,5 @@ public interface IClassSectionService {
     ClassSection updateTeacherForClass(Long idClassSection,Long idTeacher);
     String deleteClassSection(Long idClassSection);
     List<ClassSectionDTO> getListByTeacher(Long idTeacher);
+    ClassSectionDTO getClassSectionById(Long idClass);
 }

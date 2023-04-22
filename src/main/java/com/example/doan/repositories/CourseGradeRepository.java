@@ -13,9 +13,6 @@ public interface CourseGradeRepository extends JpaRepository<CourseGrade,Long> {
     @Query(value = "select * from course_grade where student_id = ?1",nativeQuery = true)
     List<CourseGrade> findByStudent(Long idStudent);
 
-//    @Query(value ="select cg.class_section_id, s.subject_name, s.tc, cg.hs1, cg.hs2, cg.finaltest" +
-//            " from course_grade cg join class_section cs on cg.class_section_id = cs.id" +
-//            " join subjects s on cs.id_subject = s.id" +
-//            " where student_id = ?1",nativeQuery = true)
-//    List<CourseGrade> getAllCourseByStudent(Long idStudent);
+    @Query(value ="select * from course_grade where class_section_id = ?1",nativeQuery = true)
+    List<CourseGrade> getCourseGradeByIdClass(Long idClass);
 }

@@ -1,8 +1,8 @@
 package com.example.doan.services.imp;
 
 import com.example.doan.dtos.CourseGradeDTO;
+import com.example.doan.dtos.ReponseStudentByClassSection;
 import com.example.doan.dtos.ResponseCourseForStudent;
-import com.example.doan.dtos.ResponseSubjectDTO;
 import com.example.doan.exceptions.DuplicateException;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.ClassSection;
@@ -36,22 +36,37 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
         List<ResponseCourseForStudent> courseForStudents = new ArrayList<>();
         for(CourseGrade courseGrade: courseGrades){
             ClassSection classSection = classSectionRepository.getClassSectionById(courseGrade.getCourseGradeId().getClassSectionId());
-            ResponseCourseForStudent responseCourse = new ResponseCourseForStudent(classSection.getId(), classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc(),
-                                                                        courseGrade.getHs1(), courseGrade.getHs2(), courseGrade.getFinaltest());
+            ResponseCourseForStudent responseCourse = new ResponseCourseForStudent(classSection.getId(), classSection.getSubjectt().getSubjectName(),
+                    classSection.getSubjectt().getTc(), courseGrade.getHs1(), courseGrade.getHs2(),
+                    courseGrade.getHs3(), courseGrade.getHs4(), courseGrade.getHs5(),courseGrade.getFinaltest());
             courseForStudents.add(responseCourse);
         }
         return courseForStudents;
     }
 
     @Override
+    public List<ReponseStudentByClassSection> getAllCourseForClassSection(Long idClass) {
+        List<CourseGrade> courseGrades = courseGradeRepository.getCourseGradeByIdClass(idClass);
+        List<ReponseStudentByClassSection> listByIdClass = new ArrayList<>();
+        for(CourseGrade courseGrade: courseGrades){
+            Optional<User> student = userRepository.findById(courseGrade.getCourseGradeId().getStudentId());
+            ReponseStudentByClassSection responseStudent = new ReponseStudentByClassSection(student.get().getUsername(), student.get().getFullName(),
+                                                                courseGrade.getHs1(), courseGrade.getHs2(), courseGrade.getHs3(), courseGrade.getHs4(),
+                                                                courseGrade.getHs5(), courseGrade.getSotietnghi(),courseGrade.getFinaltest());
+            listByIdClass.add(responseStudent);
+        }
+        return listByIdClass;
+    }
+
+    @Override
     public CourseGrade registClassSection(Long idClassSection, Long idStudent) {
         Optional<ClassSection> classSection  = classSectionRepository.findById(idClassSection);
         if(classSection.isEmpty()) {
-            throw new NotFoundException("Class section is not found");
+            throw new NotFoundException("Lớp học phần không tồn tại");
         }
         Optional<User> student = userRepository.findById(idStudent);
         if(student.isEmpty()) {
-            throw new NotFoundException("Student is not found");
+            throw new NotFoundException("Không có sinh viên này");
         }
         List<CourseGrade> courseGradeList = courseGradeRepository.findByStudent(student.get().getId());
         if(courseGradeList.size() != 0){
@@ -73,16 +88,16 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
     public CourseGrade enterPoint(Long idClassSection, Long idStudent, CourseGradeDTO courseGradeDTO) {
         Optional<ClassSection> classSection  = classSectionRepository.findById(idClassSection);
         if(classSection.isEmpty()) {
-            throw new NotFoundException("Class section is not found");
+            throw new NotFoundException("Lớp học phần không tồn tại");
         }
         Optional<User> student = userRepository.findById(idStudent);
         if(student.isEmpty()){
-            throw new NotFoundException("Student is not found");
+            throw new NotFoundException("Không có sinh viên này");
         }
         CourseGradeId courseGradeId = new CourseGradeId(student.get().getId(),classSection.get().getId());
         CourseGrade courseGrade = courseGradeRepository.findCourseGradeByCourseGradeId(courseGradeId);
         if(courseGrade == null){
-            throw new NotFoundException("This student has not exists in this section class");
+            throw new NotFoundException("Không có sinh viên trong lớp học phần này");
         }
         ConvertObject.convertCourseGradeDTOToCourseGrade(courseGradeDTO,courseGrade);
         CourseGrade newCourseGrade = courseGradeRepository.save(courseGrade);

@@ -31,7 +31,4 @@ public class ClassSection {
     @JoinColumn(name = "id_teacher")
     @JsonIgnore
     private User teacher;
-
-//    @OneToMany(mappedBy = "classSection")
-//    private List<CourseGrade> courseGrades;
 }

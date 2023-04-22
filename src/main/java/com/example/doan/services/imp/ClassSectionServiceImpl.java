@@ -28,7 +28,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     public ClassSection createClassSection(Long idsubject) {
         Optional<Subject> subject = subjectRepository.findById(idsubject);
         if(subject.isEmpty()){
-            throw new NotFoundException("Subject is not found");
+            throw new NotFoundException("Môn học này không tồn tại");
         }
         ClassSection classSection = new ClassSection();
         classSection.setSubjectt(subject.get());
@@ -56,7 +56,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     public List<ClassSectionDTO> getListClassSectionByStudent(Long idStudent) {
         Optional<User> student = userRepository.findById(idStudent);
         if(student.isEmpty()){
-            throw new NotFoundException("Student is not found");
+            throw new NotFoundException("Không tồn tại sinh viên này");
         }
         List<ClassSection> classSections = classSectionRepository.getListClassSectionByStudent(idStudent);
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
@@ -76,11 +76,11 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     public ClassSection updateTeacherForClass(Long idClassSection,Long idTeacher) {
         Optional<ClassSection> classSection = classSectionRepository.findById(idClassSection);
         if(classSection.isEmpty()){
-            throw new NotFoundException("Section class is not found");
+            throw new NotFoundException("Lớp học phần không tồn tại");
         }
         Optional<User> teacher = userRepository.findById(idTeacher);
         if(teacher.isEmpty()){
-            throw new NotFoundException("Teacher is not found");
+            throw new NotFoundException("Giáo viên không tồn tại");
         }
         classSection.get().setTeacher(teacher.get());
         return classSectionRepository.save(classSection.get());
@@ -90,7 +90,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     public String deleteClassSection(Long idClassSection) {
         Optional<ClassSection> classSection = classSectionRepository.findById(idClassSection);
         if(classSection.isEmpty()){
-            throw new NotFoundException("Section class is not found");
+            throw new NotFoundException("Lớp học phần không tồn tại");
         }
         classSectionRepository.delete(classSection.get());
         return "Delete success";
@@ -100,7 +100,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     public List<ClassSectionDTO> getListByTeacher(Long idTeacher) {
         Optional<User> teacher = userRepository.findById(idTeacher);
         if(teacher.isEmpty()){
-            throw new NotFoundException("Teacher is not found");
+            throw new NotFoundException("Giáo viên không tồn tại");
         }
         List<ClassSection> classSections = classSectionRepository.getAllClassByTeacher(idTeacher);
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
@@ -114,5 +114,16 @@ public class ClassSectionServiceImpl implements IClassSectionService {
             classSectionDTOList.add(classSectionDTO);
         }
         return classSectionDTOList;
+    }
+
+    @Override
+    public ClassSectionDTO getClassSectionById(Long idClass) {
+        ClassSection classSection = classSectionRepository.getClassSectionById(idClass);
+        if(classSection == null){
+            throw new NotFoundException("Lớp học phần không tồn tại");
+        }
+        ClassSectionDTO classSectionDTO = new ClassSectionDTO(classSection.getId(), classSection.getSubjectt().getSubjectCode(),
+                classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc());
+        return classSectionDTO;
     }
 }

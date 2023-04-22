@@ -53,10 +53,6 @@ public class User{
     @JsonIgnore
     private Set<Role> roless;
 
-    //student
-//    @OneToMany(mappedBy = "studentCourse")
-//    private List<CourseGrade> courseGrades;
-
     //teacher
     @OneToMany(mappedBy = "teacher")
     private List<ClassSection> classSections;

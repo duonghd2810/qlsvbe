@@ -15,5 +15,8 @@ public class ResponseCourseForStudent {
     private Integer soTc;
     private Double hs1;
     private Double hs2;
+    private Double hs3;
+    private Double hs4;
+    private Double hs5;
     private Double finaltest;
 }

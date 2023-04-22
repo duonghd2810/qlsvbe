@@ -52,6 +52,18 @@ public class ConvertObject {
         if(courseGradeDTO.getHs2() != null){
             courseGrade.setHs2(courseGradeDTO.getHs2());
         }
+        if(courseGradeDTO.getHs3() != null){
+            courseGrade.setHs3(courseGradeDTO.getHs3());
+        }
+        if(courseGradeDTO.getHs4() != null){
+            courseGrade.setHs4(courseGradeDTO.getHs4());
+        }
+        if(courseGradeDTO.getHs5() != null){
+            courseGrade.setHs5(courseGradeDTO.getHs5());
+        }
+        if(courseGradeDTO.getSotietnghi() != null){
+            courseGrade.setSotietnghi(courseGradeDTO.getSotietnghi());
+        }
         if(courseGradeDTO.getFinaltest() != null){
             courseGrade.setFinaltest(courseGradeDTO.getFinaltest());
         }

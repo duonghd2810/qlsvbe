@@ -17,18 +17,17 @@ public class CourseGrade {
     @EmbeddedId
     private CourseGradeId courseGradeId;
 
-//    @ManyToOne
-//    @MapsId("classSectionId")
-//    @JoinColumn(name = "id_sectionclass")
-//    private ClassSection classSection;
-//    @ManyToOne
-//    @MapsId("studentId")
-//    @JoinColumn(name = "id_student")
-//    private User studentCourse;
-
     private Double hs1;
 
     private Double hs2;
+
+    private Double hs3;
+
+    private Double hs4;
+
+    private Double hs5;
+
+    private Long sotietnghi;
 
     private Double finaltest;
 

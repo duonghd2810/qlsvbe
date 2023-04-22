@@ -18,8 +18,12 @@ public class ClassSectionController extends BaseController<ClassSection> {
     public ResponseEntity<?> getAllClassSection(){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getAllClassSection());
     }
+    @GetMapping("/classdetail/{id}")
+    public ResponseEntity<?> getClassSectionByIdClass(@PathVariable(name = "id")Long id){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getClassSectionById(id));
+    }
     @GetMapping("/{idStudent}")
-    public ResponseEntity<?> getListClassSectionByMajor(@PathVariable(name = "idStudent")Long idStudent){
+    public ResponseEntity<?> getListClassSectionByStudent(@PathVariable(name = "idStudent")Long idStudent){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getListClassSectionByStudent(idStudent));
     }
     @GetMapping("/teacher/{id}")

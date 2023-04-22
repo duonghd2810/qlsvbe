@@ -9,7 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CourseGradeDTO {
+public class ReponseStudentByClassSection {
+    private String masv;
+    private String tensinhvien;
     private Double hs1;
     private Double hs2;
     private Double hs3;
