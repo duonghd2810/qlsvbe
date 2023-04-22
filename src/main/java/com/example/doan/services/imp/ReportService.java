@@ -54,7 +54,9 @@ public class ReportService {
 
         return style;
     }
-    public ByteArrayInputStream generalExcel(Long idClass){
+    public ByteArrayInputStream generalExcel(Long idClass) throws IOException {
+        ByteArrayOutputStream outData = new ByteArrayOutputStream();
+        HSSFWorkbook workbook = new HSSFWorkbook();
         try{
             List<CourseGrade> courseGrades = courseGradeRepository.getCourseGradeByIdClass(idClass);
             List<ReponseStudentByClassSection> listByIdClass = new ArrayList<>();
@@ -65,8 +67,6 @@ public class ReportService {
                         courseGrade.getHs5(), courseGrade.getSotietnghi(),courseGrade.getFinaltest());
                 listByIdClass.add(responseStudent);
             }
-
-            HSSFWorkbook workbook = new HSSFWorkbook();
 
 
             HSSFSheet sheet = workbook.createSheet("Bảng điểm");
@@ -155,14 +155,15 @@ public class ReportService {
 
                 rowStart++;
             }
-
-            ByteArrayOutputStream outData = new ByteArrayOutputStream();
             workbook.write(outData);
             return new ByteArrayInputStream(outData.toByteArray());
         }catch (IOException e){
             e.printStackTrace();
             throw new RuntimeException
                     ("Error while generating excel.");
+        } finally {
+            workbook.close();
+            outData.close();
         }
     }
 }

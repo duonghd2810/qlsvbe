@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/coursegrade")
@@ -28,8 +29,9 @@ public class CourseGradeController extends BaseController<CourseGrade> {
         return ResponseEntity.status(HttpStatus.OK.value()).body(iCourseGradeService.getAllCourseForStudent(idStudent));
     }
     @GetMapping("/export/{idClass}")
-    public ResponseEntity<?> exportStudent(@PathVariable(name = "idClass")Long idClass){
-        ByteArrayInputStream file = reportService.generalExcel(idClass);
+    public ResponseEntity<?> exportStudent(@PathVariable(name = "idClass")Long idClass) throws IOException {
+        ByteArrayInputStream data = reportService.generalExcel(idClass);
+        InputStreamResource file = new InputStreamResource(data);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
                 .header("Content-Disposition", "attachment;filename=Bangdiem.xlsx").body(file);
 
