@@ -14,6 +14,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "course_grade")
 public class CourseGrade {
+    public CourseGrade(CourseGradeId courseGradeId) {
+        this.courseGradeId = courseGradeId;
+    }
+
+    public CourseGrade(Double hs1, Double hs2, Double hs3, Double hs4, Double hs5, Long sotietnghi) {
+        this.courseGradeId = courseGradeId;
+        this.hs1 = hs1;
+        this.hs2 = hs2;
+        this.hs3 = hs3;
+        this.hs4 = hs4;
+        this.hs5 = hs5;
+        this.sotietnghi = sotietnghi;
+    }
     @EmbeddedId
     private CourseGradeId courseGradeId;
 
@@ -30,8 +43,4 @@ public class CourseGrade {
     private Long sotietnghi;
 
     private Double finaltest;
-
-    public CourseGrade(CourseGradeId courseGradeId) {
-        this.courseGradeId = courseGradeId;
-    }
 }

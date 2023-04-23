@@ -16,7 +16,9 @@ import com.example.doan.services.ICourseGradeService;
 import com.example.doan.utils.ConvertObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +47,7 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
     }
 
     @Override
-    public List<ReponseStudentByClassSection> getAllCourseForClassSection(Long idClass) {
+    public List<ReponseStudentByClassSection> getAllStudentForClassSection(Long idClass) {
         List<CourseGrade> courseGrades = courseGradeRepository.getCourseGradeByIdClass(idClass);
         List<ReponseStudentByClassSection> listByIdClass = new ArrayList<>();
         for(CourseGrade courseGrade: courseGrades){
@@ -102,5 +104,24 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
         ConvertObject.convertCourseGradeDTOToCourseGrade(courseGradeDTO,courseGrade);
         CourseGrade newCourseGrade = courseGradeRepository.save(courseGrade);
         return newCourseGrade;
+    }
+
+    @Override
+    public void savePointForStudentToDb(MultipartFile file, Long idClass){
+        if(ReportService.isValidExcelFile(file)){
+            try {
+                List<ReponseStudentByClassSection> students = ReportService.getStudentDataFromExcel(file.getInputStream());
+                for(ReponseStudentByClassSection student: students){
+                    User user = userRepository.findByUsername(student.getMasv());
+                    CourseGrade oldCourseGrade = courseGradeRepository.findCourseGradeByCourseGradeId(new CourseGradeId(user.getId(),idClass));
+                    CourseGrade courseGrade = new CourseGrade(student.getHs1(), student.getHs2(),
+                                        student.getHs3(),student.getHs4(),student.getHs5(),student.getSotietnghi());
+                    courseGrade.setCourseGradeId(oldCourseGrade.getCourseGradeId());
+                    courseGradeRepository.save(courseGrade);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
