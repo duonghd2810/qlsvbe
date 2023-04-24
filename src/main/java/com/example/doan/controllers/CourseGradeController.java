@@ -34,7 +34,7 @@ public class CourseGradeController extends BaseController<CourseGrade> {
         ByteArrayInputStream data = reportService.generalExcel(idClass);
         InputStreamResource file = new InputStreamResource(data);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                .header("Content-Disposition", "attachment; filename=bangdiem.xlsx").body(file);
+                .header("Content-Disposition", "attachment;").body(file);
 
     }
     @PostMapping("/import/{idClass}")

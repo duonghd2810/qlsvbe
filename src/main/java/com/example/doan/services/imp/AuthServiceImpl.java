@@ -2,10 +2,13 @@ package com.example.doan.services.imp;
 
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.exceptions.BadRequestException;
+import com.example.doan.exceptions.NotFoundException;
+import com.example.doan.models.Major;
 import com.example.doan.models.Role;
 import com.example.doan.payload.AuthenticationRequest;
 import com.example.doan.payload.AuthenticationResponse;
 import com.example.doan.models.User;
+import com.example.doan.repositories.MajorRepository;
 import com.example.doan.repositories.RoleRepository;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.IAuthService;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,6 +34,8 @@ public class AuthServiceImpl implements IAuthService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private MajorRepository majorRepository;
 
     @Autowired
     private JwtService jwtService;
@@ -45,6 +51,10 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public AuthenticationResponse registerStudent(UserDTO userDTO) {
+        Optional<Major> major = majorRepository.findById(userDTO.getId_major());
+        if(major.isEmpty()){
+            throw new NotFoundException("Ngành học không tồn tại");
+        }
         User oldUser = new User();
         String username = GenaralDataUser.generateStudent();
         do {
@@ -56,6 +66,7 @@ public class AuthServiceImpl implements IAuthService {
         String password = GenaralDataUser.generatePassword();
         User user = new User();
         ConvertObject.convertUserDTOToUser(userDTO,user);
+        user.setMajor(major.get());
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         StringBuilder content = new StringBuilder("Thông tin tài khoản \n");
@@ -80,6 +91,10 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public AuthenticationResponse registerTeacher(UserDTO userDTO) {
+        Optional<Major> major = majorRepository.findById(userDTO.getId_major());
+        if(major.isEmpty()){
+            throw new NotFoundException("Ngành học không tồn tại");
+        }
         User oldUser = new User();
         String username = GenaralDataUser.generateTeacher();
         do {
@@ -91,6 +106,7 @@ public class AuthServiceImpl implements IAuthService {
         String password = GenaralDataUser.generatePassword();
         User user = new User();
         ConvertObject.convertUserDTOToUser(userDTO,user);
+        user.setMajor(major.get());
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         StringBuilder content = new StringBuilder("Thông tin tài khoản \n");

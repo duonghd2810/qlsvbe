@@ -9,6 +9,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
+    private Long id_major;
+    
     private String fullName;
 
     private Date dateOfBirth;
