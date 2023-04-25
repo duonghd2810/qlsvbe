@@ -42,7 +42,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item:classSections){
             ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
-                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(),item.getSubjectt().getMajorSubject().getId());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
@@ -62,7 +62,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item : classSections){
             ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
-                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(), item.getSubjectt().getMajorSubject().getId());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
@@ -106,7 +106,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item : classSections){
             ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
-                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc());
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(),item.getSubjectt().getMajorSubject().getId());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
@@ -123,7 +123,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
             throw new NotFoundException("Lớp học phần không tồn tại");
         }
         ClassSectionDTO classSectionDTO = new ClassSectionDTO(classSection.getId(), classSection.getSubjectt().getSubjectCode(),
-                classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc());
+                classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc(),classSection.getSubjectt().getMajorSubject().getId());
         return classSectionDTO;
     }
 }

@@ -30,6 +30,10 @@ public class UserController extends BaseController<User> {
     public ResponseEntity<?> getAllStudent(){
         return this.resListSuccess(userService.getAllStudent());
     }
+    @GetMapping("/teacherbyidmajor/{idMajor}")
+    public ResponseEntity<?> getAllTeacherByMajor(@PathVariable(name = "idMajor")Long idMajor){
+        return this.resListSuccess(userService.getAllTeacherByMajor(idMajor));
+    }
     @GetMapping("/{id_user}")
     public ResponseEntity<?> getUserById(@PathVariable(name = "id_user")Long id){
         return this.resSuccess(userService.getUserById(id));

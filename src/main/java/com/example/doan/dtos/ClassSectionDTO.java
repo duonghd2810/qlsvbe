@@ -16,11 +16,13 @@ public class ClassSectionDTO {
     private Long id_teacher;
     private String teacherName;
     private Integer soTc;
+    private Long idMajor;
 
-    public ClassSectionDTO(Long id, String maHp, String tenHp, Integer soTc) {
+    public ClassSectionDTO(Long id, String maHp, String tenHp, Integer soTc,Long idMajor) {
         this.id = id;
         this.subjectCode = maHp;
         this.tenHp = tenHp;
         this.soTc = soTc;
+        this.idMajor = idMajor;
     }
 }

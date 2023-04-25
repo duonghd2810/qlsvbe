@@ -44,6 +44,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public List<User> getAllTeacherByMajor(Long idMajor) {
+        return userRepository.getAllTeacherByMajor(idMajor);
+    }
+
+    @Override
     public User getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){

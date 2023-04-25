@@ -14,7 +14,7 @@ public interface ClassSectionRepository extends JpaRepository<ClassSection,Long>
 
     @Query(value = "select cs.id_subject, s.price, s.subject_name, s.tc, cs.id, cs.ma_hp , cs.id_teacher, s.id_major from subjects s join class_section cs on s.id = cs.id_subject " +
             "where s.id_major = (select id_major from users where id = ?1) " +
-            "order by s.subject_name",nativeQuery = true)
+            "order by s.id_major,s.subject_name",nativeQuery = true)
     List<ClassSection> getListClassSectionByStudent(Long idStudent);
 
     ClassSection getClassSectionById(Long idClass);

@@ -10,6 +10,7 @@ public interface IUserService {
     List<User> getAll();
     List<User> getAllTeacher();
     List<User> getAllStudent();
+    List<User> getAllTeacherByMajor(Long idMajor);
     User getUserById(Long id);
     User updateUser(UserDTO userDTO,Long id);
     String deleteUser(Long id);

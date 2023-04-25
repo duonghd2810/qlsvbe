@@ -25,6 +25,12 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "SELECT * FROM USERS u JOIN ROLE_USER ru ON u.id = ru.id_user " +
             "JOIN ROLES r ON ru.id_role = r.id" +
+            " WHERE r.role_name = 'TEACHER' AND id_major = ?1",
+            nativeQuery = true)
+    List<User> getAllTeacherByMajor(Long idMajor);
+
+    @Query(value = "SELECT * FROM USERS u JOIN ROLE_USER ru ON u.id = ru.id_user " +
+            "JOIN ROLES r ON ru.id_role = r.id" +
             " JOIN MAJOR m on u.id_major = m.id" +
             " WHERE r.role_name = 'STUDENT'",
             nativeQuery = true)
