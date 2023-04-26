@@ -1,6 +1,7 @@
 package com.example.doan.services.imp;
 
 import com.example.doan.dtos.CourseGradeDTO;
+import com.example.doan.dtos.CourseRegistedByStudent;
 import com.example.doan.dtos.ReponseStudentByClassSection;
 import com.example.doan.dtos.ResponseCourseForStudent;
 import com.example.doan.exceptions.DuplicateException;
@@ -84,6 +85,39 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
         courseGrade.setCourseGradeId(courseGradeId);
         CourseGrade newCourseGrade = courseGradeRepository.save(courseGrade);
         return newCourseGrade;
+    }
+
+    @Override
+    public List<CourseRegistedByStudent> listCourseRegistedByStudent(Long idStudent) {
+        List<CourseRegistedByStudent> listRegisterByIdClass = new ArrayList<>();
+        Optional<User> student = userRepository.findById(idStudent);
+        if(student.isEmpty()){
+            throw new NotFoundException("Không có sinh viên này");
+        }
+        List<CourseGrade> courseGradeList = courseGradeRepository.findByStudent(student.get().getId());
+        for(CourseGrade courseGrade: courseGradeList){
+            ClassSection classSection = classSectionRepository.getClassSectionDetail(courseGrade.getCourseGradeId().getClassSectionId());
+            if(classSection != null){
+                CourseRegistedByStudent courseRegisted = new CourseRegistedByStudent(classSection.getId(),classSection.getSubjectt().getSubjectCode(),
+                                                            classSection.getSubjectt().getSubjectName(),classSection.getSubjectt().getTc());
+                listRegisterByIdClass.add(courseRegisted);
+            }
+        }
+        return listRegisterByIdClass;
+    }
+
+    @Override
+    public String deleteCourseGradeRegisted(Long idStudent,Long idClassSection) {
+        Optional<ClassSection> classSection  = classSectionRepository.findById(idClassSection);
+        if(classSection.isEmpty()) {
+            throw new NotFoundException("Lớp học phần không tồn tại");
+        }
+        Optional<User> student = userRepository.findById(idStudent);
+        if(student.isEmpty()) {
+            throw new NotFoundException("Không có sinh viên này");
+        }
+        courseGradeRepository.deleteClassSectionRegisted(idClassSection,idStudent);
+        return "Hủy đăng ký thành công";
     }
 
     @Override

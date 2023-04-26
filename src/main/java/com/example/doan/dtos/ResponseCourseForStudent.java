@@ -19,4 +19,10 @@ public class ResponseCourseForStudent {
     private Double hs4;
     private Double hs5;
     private Double finaltest;
+
+    public ResponseCourseForStudent(Long idClass, String tenHp, Integer soTc) {
+        this.idClass = idClass;
+        this.tenHp = tenHp;
+        this.soTc = soTc;
+    }
 }
