@@ -17,6 +17,9 @@ public class ClassSectionDTO {
     private String teacherName;
     private Integer soTc;
     private Long idMajor;
+    private String id_day;
+    private String id_classroom;
+    private String lesson;
 
     public ClassSectionDTO(Long id, String maHp, String tenHp, Integer soTc,Long idMajor) {
         this.id = id;

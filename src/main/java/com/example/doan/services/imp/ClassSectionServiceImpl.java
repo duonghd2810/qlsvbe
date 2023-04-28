@@ -1,13 +1,12 @@
 package com.example.doan.services.imp;
 
 import com.example.doan.dtos.ClassSectionDTO;
+import com.example.doan.dtos.ClassSectionUpdDTO;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.models.ClassSection;
 import com.example.doan.models.Subject;
 import com.example.doan.models.User;
-import com.example.doan.repositories.ClassSectionRepository;
-import com.example.doan.repositories.SubjectRepository;
-import com.example.doan.repositories.UserRepository;
+import com.example.doan.repositories.*;
 import com.example.doan.services.IClassSectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,11 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     private ClassSectionRepository classSectionRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ClassRoomRepository classRoomRepository;
+    @Autowired
+    private DayOfWeekRepository dayOfWeekRepository;
+
     @Override
     public ClassSection createClassSection(Long idsubject) {
         Optional<Subject> subject = subjectRepository.findById(idsubject);
@@ -47,6 +51,15 @@ public class ClassSectionServiceImpl implements IClassSectionService {
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
             }
+            if(item.getClassroom() != null){
+                classSectionDTO.setId_classroom(item.getClassroom().getTenPhong());
+            }
+            if(item.getDayOfWeek() != null){
+                classSectionDTO.setId_day(item.getDayOfWeek().getDayOfWeek());
+            }
+            if(item.getLesson() != null){
+                classSectionDTO.setLesson(item.getLesson());
+            }
             classSectionDTOList.add(classSectionDTO);
         }
         return classSectionDTOList;
@@ -67,22 +80,30 @@ public class ClassSectionServiceImpl implements IClassSectionService {
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
             }
+            if(item.getClassroom() != null){
+                classSectionDTO.setId_classroom(item.getClassroom().getTenPhong());
+            }
+            if(item.getDayOfWeek() != null){
+                classSectionDTO.setId_day(item.getDayOfWeek().getDayOfWeek());
+            }
+            if(item.getLesson() != null){
+                classSectionDTO.setLesson(item.getLesson());
+            }
             classSectionDTOList.add(classSectionDTO);
         }
         return classSectionDTOList;
     }
 
     @Override
-    public ClassSection updateTeacherForClass(Long idClassSection,Long idTeacher) {
+    public ClassSection updateClassSection(Long idClassSection, ClassSectionUpdDTO classSectionUpdDTO) {
         Optional<ClassSection> classSection = classSectionRepository.findById(idClassSection);
-        if(classSection.isEmpty()){
+        if(classSection.isEmpty()) {
             throw new NotFoundException("Lớp học phần không tồn tại");
         }
-        Optional<User> teacher = userRepository.findById(idTeacher);
-        if(teacher.isEmpty()){
-            throw new NotFoundException("Giáo viên không tồn tại");
-        }
-        classSection.get().setTeacher(teacher.get());
+        classSection.get().setLesson(classSectionUpdDTO.getLesson());
+        classSection.get().setTeacher(userRepository.findById(classSectionUpdDTO.getId_teacher()).get());
+        classSection.get().setClassroom(classRoomRepository.findById(classSectionUpdDTO.getId_classroom()).get());
+        classSection.get().setDayOfWeek(dayOfWeekRepository.findById(classSectionUpdDTO.getId_day()).get());
         return classSectionRepository.save(classSection.get());
     }
 
@@ -111,6 +132,15 @@ public class ClassSectionServiceImpl implements IClassSectionService {
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
             }
+            if(item.getClassroom() != null){
+                classSectionDTO.setId_classroom(item.getClassroom().getTenPhong());
+            }
+            if(item.getDayOfWeek() != null){
+                classSectionDTO.setId_day(item.getDayOfWeek().getDayOfWeek());
+            }
+            if(item.getLesson() != null){
+                classSectionDTO.setLesson(item.getLesson());
+            }
             classSectionDTOList.add(classSectionDTO);
         }
         return classSectionDTOList;
@@ -124,6 +154,15 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         }
         ClassSectionDTO classSectionDTO = new ClassSectionDTO(classSection.getId(), classSection.getSubjectt().getSubjectCode(),
                 classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc(),classSection.getSubjectt().getMajorSubject().getId());
+        if(classSection.getClassroom() != null){
+            classSectionDTO.setId_classroom(classSection.getClassroom().getTenPhong());
+        }
+        if(classSection.getDayOfWeek() != null){
+            classSectionDTO.setId_day(classSection.getDayOfWeek().getDayOfWeek());
+        }
+        if(classSection.getLesson() != null){
+            classSectionDTO.setLesson(classSection.getLesson());
+        }
         return classSectionDTO;
     }
 }

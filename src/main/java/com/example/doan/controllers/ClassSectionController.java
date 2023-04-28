@@ -1,6 +1,7 @@
 package com.example.doan.controllers;
 
 import com.example.doan.bases.BaseController;
+import com.example.doan.dtos.ClassSectionUpdDTO;
 import com.example.doan.models.ClassSection;
 import com.example.doan.services.IClassSectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,10 @@ public class ClassSectionController extends BaseController<ClassSection> {
     public ResponseEntity<?> createClassSection(@PathVariable(name = "id")Long id){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.createClassSection(id));
     }
-    @PatchMapping("/{id}/teacher/{idTeacher}")
-    public ResponseEntity<?> updateClassSection(@PathVariable(name = "id")Long idClassSection,
-                                                @PathVariable(name = "idTeacher")Long idteacher){
-        return this.resSuccess(iClassSectionService.updateTeacherForClass(idClassSection,idteacher));
+    @PatchMapping("/updateClass/{idClassSection}")
+    public ResponseEntity<?> updateClassSection(@PathVariable(name = "idClassSection")Long idClassSection,
+                                                @RequestBody ClassSectionUpdDTO classSectionUpdDTO){
+        return this.resSuccess(iClassSectionService.updateClassSection(idClassSection,classSectionUpdDTO));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClassSection(@PathVariable(name = "id")Long idClassSection){

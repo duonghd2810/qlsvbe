@@ -20,7 +20,7 @@ public class ClassSection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String maHp;
+    private String lesson;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_subject")
@@ -31,4 +31,14 @@ public class ClassSection {
     @JoinColumn(name = "id_teacher")
     @JsonIgnore
     private User teacher;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="id_classroom")
+    @JsonIgnore
+    private Classroom classroom;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="id_day")
+    @JsonIgnore
+    private DayOfTheWeek dayOfWeek;
 }
