@@ -48,7 +48,13 @@ public class CourseGradeController extends BaseController<CourseGrade> {
     public ResponseEntity<?> importPointStudent(@PathVariable(name = "idClass")Long idClass,
                                                 @RequestParam("file")MultipartFile file) {
         iCourseGradeService.savePointForStudentToDb(file,idClass);
-        return ResponseEntity.ok(Map.of("Message"," Upload success"));
+        return ResponseEntity.ok(Map.of("Message"," Nhập điểm thành phần thành công"));
+    }
+
+    @PostMapping("/final-point")
+    public ResponseEntity<?> importFinalPointStudent(@RequestParam("file")MultipartFile file) {
+        iCourseGradeService.saveFinalPointForStudent(file);
+        return ResponseEntity.ok(Map.of("Message"," Nhập điểm cuối kỳ thành công"));
     }
 
     @GetMapping("/detailclass/{idClass}")
@@ -66,12 +72,5 @@ public class CourseGradeController extends BaseController<CourseGrade> {
     public ResponseEntity<?> registClassSection(@PathVariable(name = "idClass")Long idClassSection,
                                                 @PathVariable(name = "idStudent")Long idStudent){
         return this.resSuccess(iCourseGradeService.registClassSection(idClassSection,idStudent));
-    }
-
-    @PatchMapping("/{idClass}/enterpoint/{idStudent}")
-    public ResponseEntity<?> enterPoint(@PathVariable(name = "idClass")Long idClassSection,
-                                        @PathVariable(name = "idStudent")Long idStudent,
-                                        @RequestBody CourseGradeDTO courseGradeDTO){
-        return this.resSuccess(iCourseGradeService.enterPoint(idClassSection,idStudent,courseGradeDTO));
     }
 }

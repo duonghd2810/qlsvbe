@@ -1,6 +1,5 @@
 package com.example.doan.services.imp;
 
-import com.cloudinary.Cloudinary;
 import com.example.doan.dtos.PasswordDTO;
 import com.example.doan.dtos.UserDTO;
 import com.example.doan.exceptions.NotFoundException;
@@ -12,13 +11,9 @@ import com.example.doan.utils.ConvertObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -26,8 +21,8 @@ public class UserServiceImpl implements IUserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private Cloudinary cloudinary;
+//    @Autowired
+//    private Cloudinary cloudinary;
 
     @Override
     public List<User> getAll() {

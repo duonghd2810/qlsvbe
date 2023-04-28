@@ -254,4 +254,51 @@ public class ReportService {
         }
         return students;
     }
+    public static List<ReponseStudentByClassSection> importFinalPoint(InputStream inputStream) {
+        List<ReponseStudentByClassSection> students = new ArrayList<>();
+        String subjectCode = "";
+        try{
+            Workbook workbook = new XSSFWorkbook(inputStream);
+            Sheet sheet = workbook.getSheet("Điểm thi");
+            int rowIndex = 1;
+
+            subjectCode = sheet.getRow(0).getCell(1).toString();
+            for(Row row:sheet){
+                if( rowIndex == 1 || rowIndex == 2){
+                    rowIndex ++;
+                    continue;
+                }
+
+                Iterator<Cell> cellIterator = row.iterator();
+                int cellIndex = 0;
+                ReponseStudentByClassSection student = new ReponseStudentByClassSection();
+                student.setSubjectCode(subjectCode);
+                while(cellIterator.hasNext()){
+                    Cell cell = cellIterator.next();
+                    switch (cellIndex){
+                        case 0: {
+                            student.setMasv(cell.getStringCellValue());
+                            break;
+                        }
+                        case 1: {
+                            student.setTensinhvien(cell.getStringCellValue());
+                            break;
+                        }
+                        case 2: {
+                            student.setFinaltest(cell.getNumericCellValue());
+                            break;
+                        }
+                        default:{
+
+                        }
+                    }
+                    cellIndex ++;
+                }
+                students.add(student);
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return students;
+    }
 }

@@ -1,11 +1,12 @@
 package com.example.doan.services.imp;
 
-import com.example.doan.dtos.CourseGradeDTO;
 import com.example.doan.dtos.CourseRegistedByStudent;
 import com.example.doan.dtos.ReponseStudentByClassSection;
 import com.example.doan.dtos.ResponseCourseForStudent;
 import com.example.doan.exceptions.DuplicateException;
 import com.example.doan.exceptions.NotFoundException;
+import com.example.doan.mapper.ResponseStudentMapper;
+import com.example.doan.mapper.StudentInfoMapper;
 import com.example.doan.models.ClassSection;
 import com.example.doan.models.CourseGrade;
 import com.example.doan.models.CourseGradeId;
@@ -14,8 +15,8 @@ import com.example.doan.repositories.ClassSectionRepository;
 import com.example.doan.repositories.CourseGradeRepository;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.ICourseGradeService;
-import com.example.doan.utils.ConvertObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,8 @@ import java.util.Optional;
 
 @Service
 public class CourseGradeServiceImpl implements ICourseGradeService {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     @Autowired
     private ClassSectionRepository classSectionRepository;
     @Autowired
@@ -121,26 +124,6 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
     }
 
     @Override
-    public CourseGrade enterPoint(Long idClassSection, Long idStudent, CourseGradeDTO courseGradeDTO) {
-        Optional<ClassSection> classSection  = classSectionRepository.findById(idClassSection);
-        if(classSection.isEmpty()) {
-            throw new NotFoundException("Lớp học phần không tồn tại");
-        }
-        Optional<User> student = userRepository.findById(idStudent);
-        if(student.isEmpty()){
-            throw new NotFoundException("Không có sinh viên này");
-        }
-        CourseGradeId courseGradeId = new CourseGradeId(student.get().getId(),classSection.get().getId());
-        CourseGrade courseGrade = courseGradeRepository.findCourseGradeByCourseGradeId(courseGradeId);
-        if(courseGrade == null){
-            throw new NotFoundException("Không có sinh viên trong lớp học phần này");
-        }
-        ConvertObject.convertCourseGradeDTOToCourseGrade(courseGradeDTO,courseGrade);
-        CourseGrade newCourseGrade = courseGradeRepository.save(courseGrade);
-        return newCourseGrade;
-    }
-
-    @Override
     public void savePointForStudentToDb(MultipartFile file, Long idClass){
         if(ReportService.isValidExcelFile(file)){
             try {
@@ -152,6 +135,34 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
                                         student.getHs3(),student.getHs4(),student.getHs5(),student.getSotietnghi());
                     courseGrade.setCourseGradeId(oldCourseGrade.getCourseGradeId());
                     courseGradeRepository.save(courseGrade);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void saveFinalPointForStudent(MultipartFile file) {
+        if(ReportService.isValidExcelFile(file)){
+            try {
+                List<ReponseStudentByClassSection> studentImports = ReportService.importFinalPoint(file.getInputStream());
+                String subjectCode = studentImports.get(0).getSubjectCode();
+                String sql  = "select s.subject_code, cg.student_id, cg.finaltest from subjects s join class_section cs on s.id = cs.id_subject " +
+                        "join course_grade cg on cs.id = cg.class_section_id " +
+                        "where s.subject_code = ?";
+                List<StudentInfoMapper> lists = jdbcTemplate.query(sql,new ResponseStudentMapper(),subjectCode);
+                for(ReponseStudentByClassSection student: studentImports){
+                    User user = userRepository.findByUsername(student.getMasv());
+                    for(StudentInfoMapper info : lists){
+                        if(user.getId() == info.getStudent_id()){
+                            String sqlUp = "update course_grade set finaltest = ? " +
+                                    "from class_section cs join course_grade cg on cs.id = cg.class_section_id " +
+                                    "join subjects s on cs.id_subject = s.id " +
+                                    "where subject_code = ? and cg.student_id = ?";
+                            jdbcTemplate.update(sqlUp,student.getFinaltest(), subjectCode, user.getId());
+                        }
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
