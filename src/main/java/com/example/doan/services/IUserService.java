@@ -2,6 +2,7 @@ package com.example.doan.services;
 
 import com.example.doan.dtos.PasswordDTO;
 import com.example.doan.dtos.UserDTO;
+import com.example.doan.dtos.UsernameDTO;
 import com.example.doan.models.User;
 
 import java.util.List;
@@ -15,5 +16,6 @@ public interface IUserService {
     User updateUser(UserDTO userDTO,Long id);
     String deleteUser(Long id);
     User changePassword(Long id, PasswordDTO passwordDTO);
+    String forgotPass(UsernameDTO usernameDTO);
 //    String uploadAvatar(MultipartFile multipartFile,Long id) throws IOException;
 }
