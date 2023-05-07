@@ -30,6 +30,11 @@ public class CourseGradeController extends BaseController<CourseGrade> {
         return ResponseEntity.status(HttpStatus.OK.value()).body(iCourseGradeService.getAllCourseForStudent(idStudent));
     }
 
+    @GetMapping("/tkb/{idStudent}")
+    public ResponseEntity<?> getTKBByStudent(@PathVariable(name = "idStudent")Long idStudent){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iCourseGradeService.listTKBByStudent(idStudent));
+    }
+
     @GetMapping("/export/{idClass}")
     public ResponseEntity<?> exportStudent(@PathVariable(name = "idClass")Long idClass) throws IOException {
         ByteArrayInputStream data = reportService.generalExcel(idClass);

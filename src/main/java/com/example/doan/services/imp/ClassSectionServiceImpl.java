@@ -3,12 +3,15 @@ package com.example.doan.services.imp;
 import com.example.doan.dtos.ClassSectionDTO;
 import com.example.doan.dtos.ClassSectionUpdDTO;
 import com.example.doan.exceptions.NotFoundException;
+import com.example.doan.mapper.ResponseTKBMapper;
+import com.example.doan.mapper.TKBInfoMapper;
 import com.example.doan.models.ClassSection;
 import com.example.doan.models.Subject;
 import com.example.doan.models.User;
 import com.example.doan.repositories.*;
 import com.example.doan.services.IClassSectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     private ClassRoomRepository classRoomRepository;
     @Autowired
     private DayOfWeekRepository dayOfWeekRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public ClassSection createClassSection(Long idsubject) {
@@ -164,5 +169,21 @@ public class ClassSectionServiceImpl implements IClassSectionService {
             classSectionDTO.setLesson(classSection.getLesson());
         }
         return classSectionDTO;
+    }
+
+    @Override
+    public List<TKBInfoMapper> getTKBByTeacher(Long idTeacher) {
+        Optional<User> user = userRepository.findById(idTeacher);
+        if(user.isEmpty()){
+            throw new NotFoundException("Giao vien khong ton tai");
+        }
+        String sql = "select cs.id as class_section_id, cs.id_teacher, cs.id_day, cs.id_classroom, cs.lesson, cs.id_subject, " +
+                "s.subject_code, s.subject_name, tea.full_name as teacherName " +
+                "from class_section cs join subjects s on s.id = cs.id_subject " +
+                "join users tea on cs.id_teacher = tea.id " +
+                "where cs.id_teacher = ? " +
+                "order by cs.id_day, cs.lesson";
+        List<TKBInfoMapper> listTKB = jdbcTemplate.query(sql,new ResponseTKBMapper(),idTeacher);
+        return listTKB;
     }
 }

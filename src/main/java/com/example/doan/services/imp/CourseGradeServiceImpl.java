@@ -6,7 +6,9 @@ import com.example.doan.dtos.ResponseCourseForStudent;
 import com.example.doan.exceptions.DuplicateException;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.mapper.ResponseStudentMapper;
+import com.example.doan.mapper.ResponseTKBMapper;
 import com.example.doan.mapper.StudentInfoMapper;
+import com.example.doan.mapper.TKBInfoMapper;
 import com.example.doan.models.ClassSection;
 import com.example.doan.models.CourseGrade;
 import com.example.doan.models.CourseGradeId;
@@ -102,11 +104,30 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
             ClassSection classSection = classSectionRepository.getClassSectionDetail(courseGrade.getCourseGradeId().getClassSectionId());
             if(classSection != null){
                 CourseRegistedByStudent courseRegisted = new CourseRegistedByStudent(classSection.getId(),classSection.getSubjectt().getSubjectCode(),
-                                                            classSection.getSubjectt().getSubjectName(),classSection.getSubjectt().getTc());
+                                                            classSection.getSubjectt().getSubjectName(),classSection.getSubjectt().getTc(),
+                                                            classSection.getClassroom().getTenPhong(),classSection.getDayOfWeek().getDayOfWeek(),
+                                                            classSection.getLesson(), classSection.getTeacher().getFullName());
                 listRegisterByIdClass.add(courseRegisted);
             }
         }
         return listRegisterByIdClass;
+    }
+
+    @Override
+    public List<TKBInfoMapper> listTKBByStudent(Long idStudent) {
+        Optional<User> user = userRepository.findById(idStudent);
+        if(user.isEmpty()){
+            throw new NotFoundException("Không có sinh viên này");
+        }
+        String sql = "select cs.id as class_section_id, s.subject_code,s.subject_name, cs.id_classroom, cs.id_day, cs.lesson, cs.id_teacher, tea.full_name as teacherName " +
+                "from course_grade cg join users u on cg.student_id = u.id " +
+                "join class_section cs on cg.class_section_id = cs.id " +
+                "join subjects s on s.id = cs.id_subject " +
+                "join users tea on tea.id = cs.id_teacher " +
+                "where cg.student_id = ? " +
+                "order by cs.id_day, cs.lesson";
+        List<TKBInfoMapper> listTKBByStudent = jdbcTemplate.query(sql,new ResponseTKBMapper(),idStudent);
+        return listTKBByStudent;
     }
 
     @Override

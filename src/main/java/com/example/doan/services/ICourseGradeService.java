@@ -3,6 +3,7 @@ package com.example.doan.services;
 import com.example.doan.dtos.CourseRegistedByStudent;
 import com.example.doan.dtos.ReponseStudentByClassSection;
 import com.example.doan.dtos.ResponseCourseForStudent;
+import com.example.doan.mapper.TKBInfoMapper;
 import com.example.doan.models.CourseGrade;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,7 @@ public interface ICourseGradeService {
     List<ReponseStudentByClassSection> getAllStudentForClassSection(Long idClass);
     CourseGrade registClassSection(Long idClassSection, Long idStudent);
     List<CourseRegistedByStudent> listCourseRegistedByStudent(Long idStudent);
+    List<TKBInfoMapper> listTKBByStudent(Long idStudent);
     String deleteCourseGradeRegisted(Long idStudent,Long idClassSection);
     void savePointForStudentToDb(MultipartFile file, Long idClass);
     void saveFinalPointForStudent(MultipartFile file);

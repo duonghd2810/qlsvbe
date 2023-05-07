@@ -15,32 +15,45 @@ public class ClassSectionController extends BaseController<ClassSection> {
     @Autowired
     private IClassSectionService iClassSectionService;
 
-    @GetMapping
-    public ResponseEntity<?> getAllClassSection(){
-        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getAllClassSection());
-    }
+    //teacher
     @GetMapping("/classdetail/{id}")
     public ResponseEntity<?> getClassSectionByIdClass(@PathVariable(name = "id")Long id){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getClassSectionById(id));
     }
+
+    @GetMapping("/teacher/{id}")
+    public ResponseEntity<?> getAllClassSectionByTeacher(@PathVariable(name = "id")Long id){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getListByTeacher(id));
+    }
+
+    @GetMapping("/tkb-teacher/{idTeacher}")
+    public ResponseEntity<?> getTkbByTeacher(@PathVariable(name = "idTeacher")Long idTeacher){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getTKBByTeacher(idTeacher));
+    }
+
+    //student
     @GetMapping("/{idStudent}")
     public ResponseEntity<?> getListClassSectionByStudent(@PathVariable(name = "idStudent")Long idStudent){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getListClassSectionByStudent(idStudent));
     }
-    @GetMapping("/teacher/{id}")
-    public ResponseEntity<?> getAllClassSectionByTeacher(@PathVariable(name = "id")Long id){
-        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getListByTeacher(id));
+
+    //admin
+    @GetMapping
+    public ResponseEntity<?> getAllClassSection(){
+        return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.getAllClassSection());
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<?> createClassSection(@PathVariable(name = "id")Long id){
         return ResponseEntity.status(HttpStatus.OK.value()).body(iClassSectionService.createClassSection(id));
     }
+
     @PatchMapping("/updateClass/{idClassSection}")
     public ResponseEntity<?> updateClassSection(@PathVariable(name = "idClassSection")Long idClassSection,
                                                 @RequestBody ClassSectionUpdDTO classSectionUpdDTO){
         return this.resSuccess(iClassSectionService.updateClassSection(idClassSection,classSectionUpdDTO));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClassSection(@PathVariable(name = "id")Long idClassSection){
         return this.resStringSuccess(iClassSectionService.deleteClassSection(idClassSection));
