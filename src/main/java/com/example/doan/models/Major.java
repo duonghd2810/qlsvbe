@@ -1,5 +1,6 @@
 package com.example.doan.models;
 
+import com.example.doan.bases.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "major")
-public class Major {
+public class Major extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

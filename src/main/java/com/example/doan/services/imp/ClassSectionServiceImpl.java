@@ -41,6 +41,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         }
         ClassSection classSection = new ClassSection();
         classSection.setSubjectt(subject.get());
+        classSection.setStatus("acting");
         ClassSection newClassSection =  classSectionRepository.save(classSection);
         return newClassSection;
     }
@@ -51,7 +52,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item:classSections){
             ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
-                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(),item.getSubjectt().getMajorSubject().getId());
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(),item.getSubjectt().getMajorSubject().getId(), item.getStatus());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
@@ -80,7 +81,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item : classSections){
             ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
-                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(), item.getSubjectt().getMajorSubject().getId());
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(), item.getSubjectt().getMajorSubject().getId(), item.getStatus());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
@@ -132,7 +133,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
         List<ClassSectionDTO> classSectionDTOList = new ArrayList<>();
         for(ClassSection item : classSections){
             ClassSectionDTO classSectionDTO = new ClassSectionDTO(item.getId(),item.getSubjectt().getSubjectCode(),
-                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(),item.getSubjectt().getMajorSubject().getId());
+                    item.getSubjectt().getSubjectName(),item.getSubjectt().getTc(),item.getSubjectt().getMajorSubject().getId(), item.getStatus());
             if(item.getTeacher() != null){
                 classSectionDTO.setId_teacher(item.getTeacher().getId());
                 classSectionDTO.setTeacherName(item.getTeacher().getFullName());
@@ -158,7 +159,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
             throw new NotFoundException("Lớp học phần không tồn tại");
         }
         ClassSectionDTO classSectionDTO = new ClassSectionDTO(classSection.getId(), classSection.getSubjectt().getSubjectCode(),
-                classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc(),classSection.getSubjectt().getMajorSubject().getId());
+                classSection.getSubjectt().getSubjectName(), classSection.getSubjectt().getTc(),classSection.getSubjectt().getMajorSubject().getId(), classSection.getStatus());
         if(classSection.getClassroom() != null){
             classSectionDTO.setId_classroom(classSection.getClassroom().getTenPhong());
         }
@@ -175,7 +176,7 @@ public class ClassSectionServiceImpl implements IClassSectionService {
     public List<TKBInfoMapper> getTKBByTeacher(Long idTeacher) {
         Optional<User> user = userRepository.findById(idTeacher);
         if(user.isEmpty()){
-            throw new NotFoundException("Giao vien khong ton tai");
+            throw new NotFoundException("Giáo viên không tồn tại");
         }
         String sql = "select cs.id as class_section_id, cs.id_teacher, cs.id_day, cs.id_classroom, cs.lesson, cs.id_subject, " +
                 "s.subject_code, s.subject_name, tea.full_name as teacherName " +

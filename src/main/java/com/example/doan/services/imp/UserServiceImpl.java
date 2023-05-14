@@ -89,6 +89,9 @@ public class UserServiceImpl implements IUserService {
         if(user.isEmpty()){
             throw new NotFoundException("Người dùng không tồn tại");
         }
+        if(!passwordEncoder.matches(passwordDTO.getOldPass(),user.get().getPassword())){
+            throw new NotFoundException("Mât khẩu cũ không đúng");
+        }
         user.get().setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
         User newUser = userRepository.save(user.get());
         return newUser;

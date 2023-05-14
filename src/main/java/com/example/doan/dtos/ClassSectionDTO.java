@@ -20,12 +20,14 @@ public class ClassSectionDTO {
     private String id_day;
     private String id_classroom;
     private String lesson;
+    private String status;
 
-    public ClassSectionDTO(Long id, String maHp, String tenHp, Integer soTc,Long idMajor) {
+    public ClassSectionDTO(Long id, String maHp, String tenHp, Integer soTc,Long idMajor, String status) {
         this.id = id;
         this.subjectCode = maHp;
         this.tenHp = tenHp;
         this.soTc = soTc;
         this.idMajor = idMajor;
+        this.status = status;
     }
 }

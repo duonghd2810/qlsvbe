@@ -1,5 +1,6 @@
 package com.example.doan.models;
 
+import com.example.doan.bases.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "course_grade")
-public class CourseGrade {
+public class CourseGrade extends BaseEntity {
     public CourseGrade(CourseGradeId courseGradeId) {
         this.courseGradeId = courseGradeId;
     }

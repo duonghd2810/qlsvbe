@@ -9,12 +9,10 @@ import com.example.doan.mapper.ResponseStudentMapper;
 import com.example.doan.mapper.ResponseTKBMapper;
 import com.example.doan.mapper.StudentInfoMapper;
 import com.example.doan.mapper.TKBInfoMapper;
-import com.example.doan.models.ClassSection;
-import com.example.doan.models.CourseGrade;
-import com.example.doan.models.CourseGradeId;
-import com.example.doan.models.User;
+import com.example.doan.models.*;
 import com.example.doan.repositories.ClassSectionRepository;
 import com.example.doan.repositories.CourseGradeRepository;
+import com.example.doan.repositories.SubjectRepository;
 import com.example.doan.repositories.UserRepository;
 import com.example.doan.services.ICourseGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +35,8 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
     private UserRepository userRepository;
     @Autowired
     private CourseGradeRepository courseGradeRepository;
+    @Autowired
+    private SubjectRepository subjectRepository;
 
     @Override
     public List<ResponseCourseForStudent> getAllCourseForStudent(Long idStudent) {
@@ -106,7 +106,7 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
                 CourseRegistedByStudent courseRegisted = new CourseRegistedByStudent(classSection.getId(),classSection.getSubjectt().getSubjectCode(),
                                                             classSection.getSubjectt().getSubjectName(),classSection.getSubjectt().getTc(),
                                                             classSection.getClassroom().getTenPhong(),classSection.getDayOfWeek().getDayOfWeek(),
-                                                            classSection.getLesson(), classSection.getTeacher().getFullName());
+                                                            classSection.getLesson(), classSection.getTeacher().getFullName(), classSection.getStatus());
                 listRegisterByIdClass.add(courseRegisted);
             }
         }
@@ -169,6 +169,10 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
             try {
                 List<ReponseStudentByClassSection> studentImports = ReportService.importFinalPoint(file.getInputStream());
                 String subjectCode = studentImports.get(0).getSubjectCode();
+                Subject subject =  subjectRepository.findBySubjectCode(subjectCode);
+                if(subject == null){
+                    throw new NotFoundException("Không tồn tại môn học này");
+                }
                 String sql  = "select s.subject_code, cg.student_id, cg.finaltest from subjects s join class_section cs on s.id = cs.id_subject " +
                         "join course_grade cg on cs.id = cg.class_section_id " +
                         "where s.subject_code = ?";

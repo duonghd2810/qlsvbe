@@ -1,5 +1,6 @@
 package com.example.doan.models;
 
+import com.example.doan.bases.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="days")
-public class DayOfTheWeek {
+public class DayOfTheWeek extends BaseEntity {
     @Id
     @Nationalized
     private String dayOfWeek;

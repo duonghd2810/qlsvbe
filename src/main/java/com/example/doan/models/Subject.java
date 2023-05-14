@@ -1,5 +1,6 @@
 package com.example.doan.models;
 
+import com.example.doan.bases.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -14,7 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "subjects")
-public class Subject {
+public class Subject extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,5 +1,6 @@
 package com.example.doan.models;
 
+import com.example.doan.bases.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "class_section")
-public class ClassSection {
+public class ClassSection extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,4 +42,6 @@ public class ClassSection {
     @JoinColumn(name="id_day")
     @JsonIgnore
     private DayOfTheWeek dayOfWeek;
+
+    private String status;
 }
