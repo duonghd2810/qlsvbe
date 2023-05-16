@@ -3,6 +3,7 @@ package com.example.doan.services.imp;
 import com.example.doan.dtos.CourseRegistedByStudent;
 import com.example.doan.dtos.ReponseStudentByClassSection;
 import com.example.doan.dtos.ResponseCourseForStudent;
+import com.example.doan.exceptions.BadRequestException;
 import com.example.doan.exceptions.DuplicateException;
 import com.example.doan.exceptions.NotFoundException;
 import com.example.doan.mapper.ResponseStudentMapper;
@@ -80,6 +81,14 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
         if(courseGradeList.size() != 0){
             for(CourseGrade courseGrade:courseGradeList){
                 Optional<ClassSection> classSection1 = classSectionRepository.findById(courseGrade.getCourseGradeId().getClassSectionId());
+                if(classSection.get().getDayOfWeek() == classSection1.get().getDayOfWeek()){
+                    String[] lessonArr = classSection1.get().getLesson().split(",");
+                    for(String charArr: lessonArr){
+                        if(classSection.get().getLesson().contains(charArr)){
+                            throw new BadRequestException("Không thể đăng ký do đã trùng lịch học môn khác");
+                        }
+                    }
+                }
                 if(classSection.get().getSubjectt().getId() == classSection1.get().getSubjectt().getId()){
                     throw new DuplicateException("Bạn đã đăng ký học phần này rồi");
                 }
@@ -189,6 +198,9 @@ public class CourseGradeServiceImpl implements ICourseGradeService {
                         }
                     }
                 }
+                String sqlUpClassSection = "update class_section set status = 'end' " +
+                        "where id_subject = (select id from subjects where subject_code = ?)";
+                jdbcTemplate.update(sqlUpClassSection,subjectCode);
             } catch (IOException e) {
                 e.printStackTrace();
             }

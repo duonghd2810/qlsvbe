@@ -212,33 +212,69 @@ public class ReportService {
                             break;
                         }
                         case 3: {
-                            student.setHs1(cell.getNumericCellValue());
+                            if(cell != null){
+                                cell.setCellType(CellType.STRING);
+                                if(cell.getStringCellValue() != ""){
+                                    student.setHs1(Double.parseDouble(cell.getStringCellValue()));
+                                }else {
+                                    student.setHs1(null);
+                                }
+                            }
                             break;
                         }
                         case 4: {
-                            student.setHs2(cell.getNumericCellValue());
+                            if(cell != null){
+                                cell.setCellType(CellType.STRING);
+                                if(cell.getStringCellValue() != ""){
+                                    student.setHs2(Double.parseDouble(cell.getStringCellValue()));
+                                }else {
+                                    student.setHs2(null);
+                                }
+                            }
                             break;
                         }
                         case 5: {
-                            if(!"".equals(cell.getStringCellValue())){
-                                student.setHs3(Double.parseDouble(cell.getStringCellValue()));
+                            if(cell != null){
+                                cell.setCellType(CellType.STRING);
+                                if(cell.getStringCellValue() != ""){
+                                    student.setHs3(Double.parseDouble(cell.getStringCellValue()));
+                                }else {
+                                    student.setHs3(null);
+                                }
                             }
                             break;
                         }
                         case 6: {
-                            if(!"".equals(cell.getStringCellValue())){
-                                student.setHs4(Double.parseDouble(cell.getStringCellValue()));
+                            if(cell != null){
+                                cell.setCellType(CellType.STRING);
+                                if(cell.getStringCellValue() != ""){
+                                    student.setHs4(Double.parseDouble(cell.getStringCellValue()));
+                                }else {
+                                    student.setHs4(null);
+                                }
                             }
                             break;
                         }
                         case 7: {
-                            if(!"".equals(cell.getStringCellValue())){
-                                student.setHs5(Double.parseDouble(cell.getStringCellValue()));
+                            if(cell != null){
+                                cell.setCellType(CellType.STRING);
+                                if(cell.getStringCellValue() != ""){
+                                    student.setHs5(Double.parseDouble(cell.getStringCellValue()));
+                                }else {
+                                    student.setHs5(null);
+                                }
                             }
                             break;
                         }
                         case 8: {
-                            student.setSotietnghi((long) cell.getNumericCellValue());
+                            if(cell != null){
+                                cell.setCellType(CellType.STRING);
+                                if(cell.getStringCellValue() != ""){
+                                    student.setSotietnghi(Long.parseLong(cell.getStringCellValue()));
+                                }else {
+                                    student.setSotietnghi(null);
+                                }
+                            }
                             break;
                         }
                         default:{
@@ -259,7 +295,7 @@ public class ReportService {
         String subjectCode = "";
         try{
             Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet sheet = workbook.getSheet("Điểm thi");
+            Sheet sheet = workbook.getSheet("Sheet1");
             int rowIndex = 1;
 
             subjectCode = sheet.getRow(0).getCell(1).toString();
